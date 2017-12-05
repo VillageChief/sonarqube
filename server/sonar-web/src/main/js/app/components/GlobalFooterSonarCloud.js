@@ -19,31 +19,38 @@
  */
 // @flow
 import React from 'react';
-import { translate } from '../../helpers/l10n';
+import { Link } from 'react-router';
+import { translate, translateWithParameters } from '../../helpers/l10n';
+import GlobalFooterBranding from './GlobalFooterBranding';
 
-export default function GlobalFooterSonarCloud() {
+export default function GlobalFooterSonarCloud(
+  { hideLoggedInInfo, sonarqubeVersion } /*: Props */
+) {
   return (
     <div id="footer" className="page-footer page-container">
       <div>
-        © 2008-2017, SonarCloud.io by{' '}
-        <a href="http://www.sonarsource.com" title="SonarSource SA">
-          SonarSource SA
-        </a>
-        . All rights reserved.
+          © 2017 <a href="http://www.villagechief.com" title="Village Chief Pty Ltd">VillageChief Pty Ltd</a>. All rights reserved.
       </div>
-
+      <GlobalFooterBranding />
       <div>
-        <a href="https://about.sonarcloud.io/news/">{translate('footer.news')}</a>
+        {!sonarqubeVersion &&
+          translateWithParameters('footer.version_x', sonarqubeVersion)}
+        {!sonarqubeVersion && ' - '}
+        <a href="http://www.gnu.org/licenses/lgpl-3.0.txt">{translate('footer.licence')}</a>
         {' - '}
-        <a href="https://about.sonarcloud.io/terms.pdf">{translate('footer.terms')}</a>
+        <a href="https://about.codescan.io#news">{translate('footer.news')}</a>
         {' - '}
-        <a href="https://twitter.com/sonarqube">{translate('footer.twitter')}</a>
+        <a href="https://about.codescan.io/terms.pdf">{translate('footer.terms')}</a>
         {' - '}
-        <a href="https://about.sonarcloud.io/get-started/">{translate('footer.get_started')}</a>
+        <a href="https://www.linkedin.com/company/villagechief/">Linkedin</a>
         {' - '}
-        <a href="https://about.sonarcloud.io/contact/">{translate('footer.help')}</a>
+        <a href="https://www.facebook.com/CodeScanForSalesforce/">Facebook</a>
         {' - '}
-        <a href="https://about.sonarcloud.io/">{translate('footer.about')}</a>
+        <a href="https://twitter.com/CodeScanforSFDC">Twitter</a>
+        {' - '}
+        <a href="https://about.codescan.io#contact">{translate('footer.help')}</a>
+        {' - '}
+        <a href="https://about.codescan.io/">{translate('footer.about')}</a>
       </div>
     </div>
   );

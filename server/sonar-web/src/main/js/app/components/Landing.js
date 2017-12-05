@@ -34,7 +34,7 @@ class Landing extends React.PureComponent {
     if (currentUser.isLoggedIn) {
       router.replace('/projects');
     } else if (onSonarCloud && onSonarCloud.value === 'true') {
-      window.location = 'https://about.sonarcloud.io';
+      window.location = 'https://about.codescan.io';
     } else {
       router.replace('/about');
     }

@@ -90,3 +90,7 @@
   line-height: 16px;
   margin-top: 6px;
 }
+
+.codescanVideo {
+  max-width: 100%;
+}

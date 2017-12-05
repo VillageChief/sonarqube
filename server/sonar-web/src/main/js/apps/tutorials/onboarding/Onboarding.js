@@ -21,9 +21,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
-import TokenStep from './TokenStep';
+import CodeScanAnalysisStep from './CodeScanAnalysisStep';
 import OrganizationStep from './OrganizationStep';
-import AnalysisStep from './AnalysisStep';
 import ProjectWatcher from './ProjectWatcher';
 import { skipOnboarding } from '../../../api/users';
 import { translate, translateWithParameters } from '../../../helpers/l10n';
@@ -122,7 +121,7 @@ export default class Onboarding extends React.PureComponent {
   };
 
   handleOrganizationDone = (organization /*: string */) => {
-    this.setState({ organization, step: 'token' });
+    this.setState({ organization, step: 'analysis' });
   };
 
   handleTokenOpen = () => this.setState({ step: 'token' });
@@ -186,22 +185,15 @@ export default class Onboarding extends React.PureComponent {
             />
           )}
 
-          <TokenStep
-            currentUser={this.props.currentUser}
-            finished={this.state.token != null}
-            onContinue={this.handleTokenDone}
-            onOpen={this.handleTokenOpen}
-            open={step === 'token'}
-            stepNumber={stepNumber++}
-          />
-
-          <AnalysisStep
+          <CodeScanAnalysisStep
             onFinish={this.handleFinish}
+            skipOnboarding={skipOnboarding}
             onReset={this.handleReset}
             organization={this.state.organization}
             open={step === 'analysis'}
             sonarCloud={sonarCloud}
             stepNumber={stepNumber}
+            currentUser={this.props.currentUser}
             token={token}
           />
 

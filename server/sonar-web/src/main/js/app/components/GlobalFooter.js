@@ -19,10 +19,7 @@
  */
 // @flow
 import React from 'react';
-import { Link } from 'react-router';
 import GlobalFooterSonarCloud from './GlobalFooterSonarCloud';
-import GlobalFooterBranding from './GlobalFooterBranding';
-import { translate, translateWithParameters } from '../../helpers/l10n';
 
 /*::
 type Props = {
@@ -34,50 +31,7 @@ type Props = {
 */
 
 export default function GlobalFooter(
-  { hideLoggedInInfo, productionDatabase, onSonarCloud, sonarqubeVersion } /*: Props */
+  { hideLoggedInInfo, sonarqubeVersion } /*: Props */
 ) {
-  if (onSonarCloud && onSonarCloud.value === 'true') {
-    return <GlobalFooterSonarCloud hideLoggedInInfo={hideLoggedInInfo} />;
-  }
-
-  return (
-    <div id="footer" className="page-footer page-container">
-      {productionDatabase === false && (
-        <div className="alert alert-danger">
-          <p className="big" id="evaluation_warning">
-            {translate('footer.production_database_warning')}
-          </p>
-          <p>{translate('footer.production_database_explanation')}</p>
-        </div>
-      )}
-
-      <GlobalFooterBranding />
-
-      <div>
-        {!hideLoggedInInfo &&
-          sonarqubeVersion &&
-          translateWithParameters('footer.version_x', sonarqubeVersion)}
-        {!hideLoggedInInfo && sonarqubeVersion && ' - '}
-        <a href="http://www.gnu.org/licenses/lgpl-3.0.txt">{translate('footer.licence')}</a>
-        {' - '}
-        <a href="http://www.sonarqube.org">{translate('footer.community')}</a>
-        {' - '}
-        <a href="https://redirect.sonarsource.com/doc/home.html">
-          {translate('footer.documentation')}
-        </a>
-        {' - '}
-        <a href="https://redirect.sonarsource.com/doc/community.html">
-          {translate('footer.support')}
-        </a>
-        {' - '}
-        <a href="https://redirect.sonarsource.com/doc/plugin-library.html">
-          {translate('footer.plugins')}
-        </a>
-        {!hideLoggedInInfo && ' - '}
-        {!hideLoggedInInfo && <Link to="/web_api">{translate('footer.web_api')}</Link>}
-        {!hideLoggedInInfo && ' - '}
-        {!hideLoggedInInfo && <Link to="/about">{translate('footer.about')}</Link>}
-      </div>
-    </div>
-  );
+  return <GlobalFooterSonarCloud hideLoggedInInfo={hideLoggedInInfo} sonarqubeVersion={sonarqubeVersion} />;
 }
