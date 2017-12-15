@@ -145,7 +145,7 @@ public class AnalysisContextReportPublisher {
   }
 
   private static void dumpPropIfNotSensitive(BufferedWriter fileWriter, String prop, String value) throws IOException {
-    fileWriter.append(String.format(KEY_VALUE_FORMAT, prop, sensitive(prop) ? "******" : value)).append('\n');
+    fileWriter.append(String.format(KEY_VALUE_FORMAT, prop, sensitive(prop) ? "******" : hideUrlCredentials(value))).append('\n');
   }
 
   /**
@@ -184,5 +184,8 @@ public class AnalysisContextReportPublisher {
 
   private static boolean sensitive(String key) {
     return key.equals(CoreProperties.LOGIN) || key.contains(".password") || key.contains(".secured");
+  }
+  private static String hideUrlCredentials(String value) {
+    return value.replaceFirst("://.*@", "://******@");
   }
 }
