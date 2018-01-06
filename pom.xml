@@ -11,7 +11,7 @@
   <groupId>org.sonarsource.sonarqube</groupId>
   <artifactId>sonarqube</artifactId>
   <packaging>pom</packaging>
-  <version>6.7</version>
+  <version>6.7.1</version>
   <name>SonarQube</name>
   <url>http://www.sonarqube.org/</url>
   <description>Open source platform for continuous inspection of code quality</description>
@@ -19,7 +19,6 @@
   <modules>
     <module>sonar-plugin-api-deps</module>
     <module>sonar-application</module>
-    <module>codescan-application</module>
     <module>sonar-scanner-engine</module>
     <module>sonar-scanner-protocol</module>
     <module>sonar-scanner-engine-shaded</module>
@@ -93,7 +92,7 @@
     <hazelcast.version>3.8.6</hazelcast.version>
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.min.version>3.0.0</maven.min.version>
+    <maven.min.version>3.3.9</maven.min.version>
     <timestamp>${maven.build.timestamp}</timestamp>
     <maven.build.timestamp.format>yyyy-MM-dd'T'HH:mm:ssZ</maven.build.timestamp.format>
     <license.title>SonarQube</license.title>
