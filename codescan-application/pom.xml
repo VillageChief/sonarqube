@@ -7,7 +7,7 @@
   <parent>
     <groupId>org.sonarsource.sonarqube</groupId>
     <artifactId>sonarqube</artifactId>
-    <version>6.7</version>
+    <version>6.7.1</version>
   </parent>
 
   <artifactId>codescan-application</artifactId>
@@ -151,7 +151,7 @@
             <configuration>
               <rules>
                 <requireFilesSize>
-                  <minsize>91451538</minsize>
+                  <minsize>85811057</minsize>
                   <maxsize>170000000</maxsize>
                   <files>
                     <file>${project.build.directory}/sonarqube-${project.version}.zip</file>
