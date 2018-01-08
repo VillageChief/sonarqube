@@ -19,7 +19,6 @@
   <modules>
     <module>sonar-plugin-api-deps</module>
     <module>sonar-application</module>
-    <module>codescan-application</module>
     <module>sonar-scanner-engine</module>
     <module>sonar-scanner-protocol</module>
     <module>sonar-scanner-engine-shaded</module>
@@ -33,6 +32,7 @@
     <module>sonar-ws</module>
     <module>sonar-testing-harness</module>
     <module>plugins/sonar-xoo-plugin</module>
+    <module>codescan-application</module>
   </modules>
 
   <organization>
