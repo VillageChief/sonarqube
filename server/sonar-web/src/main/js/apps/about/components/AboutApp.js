@@ -73,7 +73,7 @@ class AboutApp extends React.PureComponent {
   componentDidMount() {
     this.mounted = true;
     if (this.props.onSonarCloud && this.props.onSonarCloud.value === 'true') {
-      window.location = 'https://about.codescan.io';
+      window.location = 'https://www.code-scan.com/cloud/';
     } else {
       this.loadData();
     }

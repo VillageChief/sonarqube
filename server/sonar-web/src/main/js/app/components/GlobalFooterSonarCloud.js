@@ -38,9 +38,7 @@ export default function GlobalFooterSonarCloud(
         {!sonarqubeVersion && ' - '}
         <a href="http://www.gnu.org/licenses/lgpl-3.0.txt">{translate('footer.licence')}</a>
         {' - '}
-        <a href="https://about.codescan.io#news">{translate('footer.news')}</a>
-        {' - '}
-        <a href="https://about.codescan.io/terms.pdf">{translate('footer.terms')}</a>
+        <a href="https://www.code-scan.com/tos/">{translate('footer.terms')}</a>
         {' - '}
         <a href="https://www.linkedin.com/company/villagechief/">Linkedin</a>
         {' - '}
@@ -48,9 +46,9 @@ export default function GlobalFooterSonarCloud(
         {' - '}
         <a href="https://twitter.com/CodeScanforSFDC">Twitter</a>
         {' - '}
-        <a href="https://about.codescan.io#contact">{translate('footer.help')}</a>
+        <a href="https://www.code-scan.com/help/support/">{translate('footer.help')}</a>
         {' - '}
-        <a href="https://about.codescan.io/">{translate('footer.about')}</a>
+        <a href="https://www.code-scan.com/cloud/">{translate('footer.about')}</a>
       </div>
     </div>
   );

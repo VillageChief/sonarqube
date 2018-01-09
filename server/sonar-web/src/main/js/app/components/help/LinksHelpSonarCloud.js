@@ -32,11 +32,7 @@ export default function LinksHelpSonarCloud({ onClose } /*: Props */) {
       <h2 className="spacer-top spacer-bottom">{translate('help.section.links')}</h2>
 
       <p className="spacer-bottom">
-        <a href="https://about.codescan.io#news">{translate('footer.news')}</a>
-      </p>
-
-      <p className="spacer-bottom">
-        <a href="https://about.codescan.io/terms.pdf">{translate('footer.terms')}</a>
+        <a href="https://www.code-scan.com/tos/">{translate('footer.terms')}</a>
       </p>
 
       <p className="spacer-bottom">
@@ -52,7 +48,7 @@ export default function LinksHelpSonarCloud({ onClose } /*: Props */) {
       </p>
 
       <p className="spacer-bottom">
-        <a href="https://about.codescan.io#contact">{translate('footer.help')}</a>
+        <a href="https://www.code-scan.com/help/support/">{translate('footer.help')}</a>
       </p>
 
       <p className="spacer-bottom">
@@ -62,7 +58,7 @@ export default function LinksHelpSonarCloud({ onClose } /*: Props */) {
       </p>
 
       <p>
-        <a href="https://about.codescan.io/">{translate('footer.about')}</a>
+        <a href="https://www.code-scan.com/cloud/">{translate('footer.about')}</a>
       </p>
     </div>
   );
