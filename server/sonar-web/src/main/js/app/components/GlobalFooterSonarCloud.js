@@ -48,7 +48,7 @@ export default function GlobalFooterSonarCloud(
         {' - '}
         <a href="https://www.code-scan.com/help/support/">{translate('footer.help')}</a>
         {' - '}
-        <a href="https://www.code-scan.com/cloud/">{translate('footer.about')}</a>
+        <a href="https://www.code-scan.com/cloud/getting-started/">{translate('footer.about')}</a>
       </div>
     </div>
   );

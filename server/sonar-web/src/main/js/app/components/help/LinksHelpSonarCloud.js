@@ -58,7 +58,7 @@ export default function LinksHelpSonarCloud({ onClose } /*: Props */) {
       </p>
 
       <p>
-        <a href="https://www.code-scan.com/cloud/">{translate('footer.about')}</a>
+        <a href="https://www.code-scan.com/cloud/getting-started/">{translate('footer.about')}</a>
       </p>
     </div>
   );
