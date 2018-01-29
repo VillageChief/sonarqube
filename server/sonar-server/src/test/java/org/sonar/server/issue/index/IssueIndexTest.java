@@ -1325,10 +1325,10 @@ public class IssueIndexTest {
 
     List<BranchStatistics> branchStatistics = underTest.searchBranchStatistics(project.uuid(), asList(branch1.uuid(), branch2.uuid(), branch3.uuid()));
 
-    assertThat(branchStatistics).extracting(BranchStatistics::getBranchUuid, BranchStatistics::getBugs, BranchStatistics::getVulnerabilities, BranchStatistics::getCodeSmells)
+    assertThat(branchStatistics).extracting(BranchStatistics::getBranchUuid, BranchStatistics::getBugs, BranchStatistics::getVulnerabilities, BranchStatistics::getCodeSmells, BranchStatistics::getFixed)
       .containsExactlyInAnyOrder(
-        tuple(branch1.uuid(), 1L, 1L, 1L),
-        tuple(branch3.uuid(), 0L, 0L, 3L));
+        tuple(branch1.uuid(), 1L, 1L, 1L, 1L),
+        tuple(branch3.uuid(), 0L, 0L, 3L, 1L));
   }
 
   @Test

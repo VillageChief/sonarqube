@@ -156,6 +156,7 @@ public class ListAction implements BranchWsAction {
       statusBuilder.setBugs(branchStatistics == null ? 0L : branchStatistics.getBugs());
       statusBuilder.setVulnerabilities(branchStatistics == null ? 0L : branchStatistics.getVulnerabilities());
       statusBuilder.setCodeSmells(branchStatistics == null ? 0L : branchStatistics.getCodeSmells());
+      statusBuilder.setFixed(branchStatistics == null ? 0L : branchStatistics.getFixed());
     }
     builder.setStatus(statusBuilder);
   }

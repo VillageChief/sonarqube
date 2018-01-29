@@ -53,6 +53,7 @@ message Branch {
     optional int64 bugs = 2;
     optional int64 vulnerabilities = 3;
     optional int64 codeSmells = 4;
+    optional int64 fixed = 5;
   }
 
 }

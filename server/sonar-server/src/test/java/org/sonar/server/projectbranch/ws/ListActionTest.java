@@ -286,11 +286,11 @@ public class ListActionTest {
       .executeProtobuf(ListWsResponse.class);
 
     assertThat(response.getBranchesList().stream().map(WsBranches.Branch::getStatus))
-      .extracting(Status::hasBugs, Status::getBugs, Status::hasVulnerabilities, Status::getVulnerabilities, Status::hasCodeSmells, Status::getCodeSmells)
+      .extracting(Status::hasBugs, Status::getBugs, Status::hasVulnerabilities, Status::getVulnerabilities, Status::hasCodeSmells, Status::getCodeSmells, Status::getFixed)
       .containsExactlyInAnyOrder(
-        tuple(false, 0L, false, 0L, false, 0L),
-        tuple(false, 0L, false, 0L, false, 0L),
-        tuple(true, 1L, true, 2L, true, 3L));
+        tuple(false, 0L, false, 0L, false, 0L, 0L),
+        tuple(false, 0L, false, 0L, false, 0L, 0L),
+        tuple(true, 1L, true, 2L, true, 3L, 1L));
   }
 
   @Test

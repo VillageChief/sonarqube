@@ -32,12 +32,14 @@ public class BranchStatistics {
   private final long bugs;
   private final long vulnerabilities;
   private final long codeSmells;
+  private long fixed;
 
   public BranchStatistics(String branchUuid, Map<String, Long> issueCountByType) {
     this.branchUuid = branchUuid;
     this.bugs = getNonNullValue(issueCountByType, BUG);
     this.vulnerabilities = getNonNullValue(issueCountByType, VULNERABILITY);
     this.codeSmells = getNonNullValue(issueCountByType, CODE_SMELL);
+    this.fixed = 0;
   }
 
   public String getBranchUuid() {
@@ -54,6 +56,13 @@ public class BranchStatistics {
 
   public long getCodeSmells() {
     return codeSmells;
+  }
+
+  public long getFixed() {
+    return fixed;
+  }
+  public void setFixed(long fixed) {
+	this.fixed = fixed;
   }
 
   private static long getNonNullValue(Map<String, Long> issueCountByType, RuleType type) {

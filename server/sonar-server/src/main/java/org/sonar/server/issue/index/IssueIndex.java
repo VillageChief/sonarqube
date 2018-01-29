@@ -22,6 +22,8 @@ package org.sonar.server.issue.index;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
+
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -51,6 +53,7 @@ import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramInter
 import org.elasticsearch.search.aggregations.bucket.histogram.ExtendedBounds;
 import org.elasticsearch.search.aggregations.bucket.terms.InternalTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.StringTerms;
+import org.elasticsearch.search.aggregations.bucket.terms.StringTerms.Bucket;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms.Order;
 import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
@@ -62,6 +65,7 @@ import org.elasticsearch.search.aggregations.metrics.valuecount.InternalValueCou
 import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Duration;
+import org.sonar.api.issue.Issue;
 import org.sonar.api.utils.DateUtils;
 import org.sonar.api.utils.System2;
 import org.sonar.core.util.stream.MoreCollectors;
@@ -727,12 +731,37 @@ public class IssueIndex {
         .subAggregation(AggregationBuilders.terms("types")
           .field(IssueIndexDefinition.FIELD_ISSUE_TYPE)));
     SearchResponse response = request.get();
-    return ((StringTerms) response.getAggregations().get("branchUuids")).getBuckets().stream()
-      .map(bucket -> new BranchStatistics(bucket.getKeyAsString(),
-        ((StringTerms) bucket.getAggregations().get("types")).getBuckets()
-          .stream()
-          .collect(uniqueIndex(StringTerms.Bucket::getKeyAsString, InternalTerms.Bucket::getDocCount))))
-      .collect(MoreCollectors.toList(branchUuids.size()));
+    
+    Map<String, BranchStatistics> ret = new HashMap<String, BranchStatistics>();
+    for ( BranchStatistics branch : ((StringTerms) response.getAggregations().get("branchUuids")).getBuckets().stream()
+	    .map(bucket -> new BranchStatistics(bucket.getKeyAsString(),
+	      ((StringTerms) bucket.getAggregations().get("types")).getBuckets()
+	        .stream()
+	        .collect(uniqueIndex(StringTerms.Bucket::getKeyAsString, InternalTerms.Bucket::getDocCount))))
+	    .collect(MoreCollectors.toList(branchUuids.size())) ) {
+    	ret.put(branch.getBranchUuid(), branch);
+    }
+
+    request = client.prepareSearch(IssueIndexDefinition.INDEX_TYPE_ISSUE)
+      .setRouting(projectUuid)
+      .setQuery(
+        boolQuery()
+          .must(termsQuery(IssueIndexDefinition.FIELD_ISSUE_BRANCH_UUID, branchUuids))
+          .must(termQuery(IssueIndexDefinition.FIELD_ISSUE_RESOLUTION, Issue.RESOLUTION_FIXED))
+          .must(termQuery(IssueIndexDefinition.FIELD_ISSUE_IS_MAIN_BRANCH, Boolean.toString(false))))
+      .setSize(0)
+      .addAggregation(AggregationBuilders.terms("branchUuids")
+        .field(IssueIndexDefinition.FIELD_ISSUE_BRANCH_UUID)
+        .size(branchUuids.size()));
+    response = request.get();
+    for ( Bucket b : ((StringTerms) response.getAggregations().get("branchUuids")).getBuckets() ) {
+    	BranchStatistics branch = ret.get(b.getKeyAsString());
+    	if ( branch != null ) {
+        	branch.setFixed(b.getDocCount());
+    	}
+    }
+    
+    return Arrays.asList(ret.values().toArray(new BranchStatistics[0]));
   }
 
 }
