@@ -37,7 +37,7 @@ it('renders status of short-living branch', () => {
     isMain: false,
     mergeBranch: 'master',
     name: 'feature',
-    status: { bugs: 0, codeSmells: 2, vulnerabilities: 3 },
+    status: { bugs: 0, codeSmells: 2, vulnerabilities: 3, fixed: 4 },
     type: BranchType.SHORT
   };
   expect(shallow(<ComponentNavMeta branch={branch} component={component} />)).toMatchSnapshot();

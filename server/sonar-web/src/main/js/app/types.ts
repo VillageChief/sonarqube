@@ -51,6 +51,7 @@ export interface ShortLivingBranch {
     bugs: number;
     codeSmells: number;
     vulnerabilities: number;
+    fixed: number;
   };
   type: BranchType.SHORT;
 }

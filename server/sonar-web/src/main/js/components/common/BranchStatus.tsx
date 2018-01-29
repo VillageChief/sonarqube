@@ -49,6 +49,7 @@ export default function BranchStatus({ branch, concise = false }: Props) {
         <li className="spacer-left">
           <StatusIndicator color={indicatorColor} size="small" />
         </li>
+        <li>Fixes {branch.status.fixed}</li>
       </ul>
     ) : (
       <ul className="list-inline branch-status">
@@ -66,6 +67,9 @@ export default function BranchStatus({ branch, concise = false }: Props) {
         <li>
           {branch.status.codeSmells}
           <CodeSmellIcon />
+        </li>
+        <li>
+          Fixes {branch.status.fixed}
         </li>
       </ul>
     );

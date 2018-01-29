@@ -51,7 +51,7 @@ it('renders short-living branch', () => {
     isMain: false,
     mergeBranch: 'master',
     name: 'foo',
-    status: { bugs: 0, codeSmells: 0, vulnerabilities: 0 },
+    status: { bugs: 0, codeSmells: 0, vulnerabilities: 0, fixed: 0 },
     type: BranchType.SHORT
   };
   const component = {} as Component;

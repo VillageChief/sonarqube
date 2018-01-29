@@ -87,7 +87,7 @@ function shortBranch(name: string, isOrphan?: true): ShortLivingBranch {
     isOrphan,
     mergeBranch: 'master',
     name,
-    status: { bugs: 0, codeSmells: 0, vulnerabilities: 0 },
+    status: { bugs: 0, codeSmells: 0, vulnerabilities: 0, fixed: 0 },
     type: BranchType.SHORT
   };
 }

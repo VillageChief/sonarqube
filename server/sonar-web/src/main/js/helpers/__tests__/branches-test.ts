@@ -61,7 +61,7 @@ function mainBranch(): MainBranch {
 }
 
 function shortLivingBranch(name: string, mergeBranch: string): ShortLivingBranch {
-  const status = { bugs: 0, codeSmells: 0, vulnerabilities: 0 };
+  const status = { bugs: 0, codeSmells: 0, vulnerabilities: 0, fixed: 0 };
   return { isMain: false, mergeBranch, name, status, type: BranchType.SHORT };
 }
 

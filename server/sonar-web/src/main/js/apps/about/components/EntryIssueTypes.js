@@ -32,12 +32,13 @@ type Props = {
   bugs: ?number,
   codeSmells: ?number,
   loading: boolean,
-  vulnerabilities: ?number
+  vulnerabilities: ?number,
+  fixed: ?number
 };
 */
 
 export default function EntryIssueTypes(
-  { bugs, codeSmells, loading, vulnerabilities } /*: Props */
+  { bugs, codeSmells, loading, vulnerabilities, fixed } /*: Props */
 ) {
   return (
     <div className="about-page-projects">

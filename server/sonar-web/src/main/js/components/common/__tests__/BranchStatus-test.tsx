@@ -23,11 +23,11 @@ import BranchStatus from '../BranchStatus';
 import { BranchType, LongLivingBranch } from '../../../app/types';
 
 it('renders status of short-living branches', () => {
-  checkShort(0, 0, 0);
-  checkShort(0, 1, 0);
-  checkShort(7, 3, 6);
+  checkShort(0, 0, 0, 0);
+  checkShort(0, 1, 0, 0);
+  checkShort(7, 3, 6, 0);
 
-  function checkShort(bugs: number, codeSmells: number, vulnerabilities: number) {
+  function checkShort(bugs: number, codeSmells: number, vulnerabilities: number, fixed: number) {
     expect(
       shallow(
         <BranchStatus
@@ -35,7 +35,7 @@ it('renders status of short-living branches', () => {
             isMain: false,
             mergeBranch: 'master',
             name: 'foo',
-            status: { bugs, codeSmells, vulnerabilities },
+            status: { bugs, codeSmells, vulnerabilities, fixed },
             type: BranchType.SHORT
           }}
         />
