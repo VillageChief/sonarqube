@@ -148,11 +148,6 @@ public class DbTester extends AbstractDbTester<TestDb> {
     return this;
   }
 
-  public DbTester setOrganizationPublicVisibility(boolean value) {
-    properties().insertInternal("sonar.organizations.defaultPublicVisibility", value ? "true" : "false");
-    return this;
-  }
-
   @Override
   protected void before() throws Throwable {
     db.start();

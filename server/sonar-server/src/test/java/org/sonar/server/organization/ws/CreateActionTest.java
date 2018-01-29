@@ -353,29 +353,6 @@ public class CreateActionTest {
   }
 
   @Test
-  public void visibility_public_if_not_set() {
-	OrganizationDto organization = dbTester.organizations().insert();
-
-    assertThat(dbTester.organizations().getNewProjectPrivate(organization)).isFalse();
-  }
-
-  @Test
-  public void visibility_public_if_true() {
-	dbTester.setOrganizationPublicVisibility(true);
-	OrganizationDto organization = dbTester.organizations().insert();
-
-    assertThat(dbTester.organizations().getNewProjectPrivate(organization)).isFalse();
-  }
-  
-  @Test
-  public void visibility_public_if_false() {
-	dbTester.setOrganizationPublicVisibility(false);
-		OrganizationDto organization = dbTester.organizations().insert();
-
-	    assertThat(dbTester.organizations().getNewProjectPrivate(organization)).isTrue();
-  }
-
-  @Test
   public void request_fails_if_key_computed_from_name_already_exists_in_DB() {
     logInAsSystemAdministrator();
     String key = STRING_65_CHARS_LONG.substring(0, 32);
