@@ -201,27 +201,30 @@ public class AnalysisContextReportPublisherTest {
       .setProperty("sonar.projectKey", "foo")
       .setProperty("sonar.login", "my_token")
       .setProperty("sonar.password", "azerty")
+      .setProperty("sonar.webhooks.global.1.url", "http://my_credentials:password@url/path")
       .setProperty("sonar.cpp.license.secured", "AZERTY")));
 
     assertThat(FileUtils.readFileToString(writer.getFileStructure().analysisLog())).containsSubsequence(
       "sonar.cpp.license.secured=******",
       "sonar.login=******",
       "sonar.password=******",
-      "sonar.projectKey=foo");
+      "sonar.projectKey=foo",
+      "sonar.webhooks.global.1.url=http://******@url/path");
   }
 
   // SONAR-7598
   @Test
   public void shouldNotDumpSensitiveGlobalProperties() throws Exception {
     ScannerReportWriter writer = new ScannerReportWriter(temp.newFolder());
-    when(globalSettings.getServerSideSettings()).thenReturn(ImmutableMap.of("sonar.login", "my_token", "sonar.password", "azerty", "sonar.cpp.license.secured", "AZERTY"));
+    when(globalSettings.getServerSideSettings()).thenReturn(ImmutableMap.of("sonar.login", "my_token", "sonar.password", "azerty", "sonar.cpp.license.secured", "AZERTY", "sonar.url", "http://my_credentials:password@url/path"));
 
     publisher.init(writer);
 
     assertThat(FileUtils.readFileToString(writer.getFileStructure().analysisLog())).containsSubsequence(
       "sonar.cpp.license.secured=******",
       "sonar.login=******",
-      "sonar.password=******");
+      "sonar.password=******",
+      "sonar.url=http://******@url/path");
   }
 
   // SONAR-7371

@@ -44,7 +44,7 @@ class Landing extends React.PureComponent<Props> {
         this.context.router.replace('/projects');
       }
     } else if (onSonarCloud) {
-      window.location.href = 'https://about.sonarcloud.io';
+      window.location.href = 'https://www.code-scan.com/cloud/';
     } else {
       this.context.router.replace('/about');
     }

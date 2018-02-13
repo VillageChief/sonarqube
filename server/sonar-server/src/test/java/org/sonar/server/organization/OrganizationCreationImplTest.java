@@ -110,6 +110,40 @@ public class OrganizationCreationImplTest {
   private OrganizationCreationImpl underTest = new OrganizationCreationImpl(dbClient, system2, uuidFactory, organizationValidation, settings.asConfig(), userIndexer,
     builtInQProfileRepositoryRule, defaultGroupCreator);
 
+  private UserDto someUser;
+
+  @Before
+  public void setUp() {
+    someUser = db.users().insertUser();
+    userIndexer.indexOnStartup(new HashSet<>());
+  }
+
+  @Test
+  public void visibility_public_if_not_set() throws KeyConflictException {
+	builtInQProfileRepositoryRule.initialize();
+	OrganizationDto organization = underTest.create(dbSession, someUser, FULL_POPULATED_NEW_ORGANIZATION);
+
+    assertThat(db.organizations().getNewProjectPrivate(organization)).isFalse();
+  }
+
+  @Test
+  public void visibility_public_if_true() throws KeyConflictException {
+	builtInQProfileRepositoryRule.initialize();
+	settings.setProperty(CorePropertyDefinitions.ORGANIZATIONS_DEFAULT_PUBLIC_VISIBILITY, true);
+	OrganizationDto organization = underTest.create(dbSession, someUser, FULL_POPULATED_NEW_ORGANIZATION);
+
+    assertThat(db.organizations().getNewProjectPrivate(organization)).isFalse();
+  }
+  
+  @Test
+  public void visibility_public_if_false() throws KeyConflictException {
+	builtInQProfileRepositoryRule.initialize();
+	settings.setProperty(CorePropertyDefinitions.ORGANIZATIONS_DEFAULT_PUBLIC_VISIBILITY, false);
+	OrganizationDto organization = underTest.create(dbSession, someUser, FULL_POPULATED_NEW_ORGANIZATION);
+
+    assertThat(db.organizations().getNewProjectPrivate(organization)).isTrue();
+  }
+
   @Test
   public void create_throws_NPE_if_NewOrganization_arg_is_null() throws OrganizationCreation.KeyConflictException {
     UserDto user = db.users().insertUser();

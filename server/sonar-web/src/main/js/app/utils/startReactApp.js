@@ -78,10 +78,18 @@ import getStore from './getStore';
 import getHistory from './getHistory';
 
 function handleUpdate() {
-  const { action } = this.state.location;
+  const { action, basename, pathname } = this.state.location;
 
   if (action === 'PUSH') {
     window.scrollTo(0, 0);
+  }
+
+  //track google analytics
+  if (typeof window.ga === 'function') {
+    window.ga('send', {
+       hitType: 'pageview',
+       page: basename + pathname
+      });
   }
 }
 

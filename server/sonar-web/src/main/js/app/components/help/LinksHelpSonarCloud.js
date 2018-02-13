@@ -32,23 +32,23 @@ export default function LinksHelpSonarCloud({ onClose } /*: Props */) {
       <h2 className="spacer-top spacer-bottom">{translate('help.section.links')}</h2>
 
       <p className="spacer-bottom">
-        <a href="https://about.sonarcloud.io/news/">{translate('footer.news')}</a>
+        <a href="https://www.code-scan.com/tos/">{translate('footer.terms')}</a>
       </p>
 
       <p className="spacer-bottom">
-        <a href="https://about.sonarcloud.io/terms.pdf">{translate('footer.terms')}</a>
+        <a href="https://www.linkedin.com/company/villagechief/">LinkedIn</a>
       </p>
 
       <p className="spacer-bottom">
-        <a href="https://twitter.com/sonarqube">{translate('footer.twitter')}</a>
+        <a href="https://www.facebook.com/CodeScanForSalesforce/">Facebook</a>
       </p>
 
       <p className="spacer-bottom">
-        <a href="https://about.sonarcloud.io/get-started/">{translate('footer.get_started')}</a>
+        <a href="https://twitter.com/CodeScanforSFDC">{translate('footer.twitter')}</a>
       </p>
 
       <p className="spacer-bottom">
-        <a href="https://about.sonarcloud.io/contact/">{translate('footer.help')}</a>
+        <a href="https://www.code-scan.com/help/support/">{translate('footer.help')}</a>
       </p>
 
       <p className="spacer-bottom">
@@ -58,7 +58,7 @@ export default function LinksHelpSonarCloud({ onClose } /*: Props */) {
       </p>
 
       <p>
-        <a href="https://about.sonarcloud.io/">{translate('footer.about')}</a>
+        <a href="https://www.code-scan.com/cloud/getting-started/">{translate('footer.about')}</a>
       </p>
     </div>
   );

@@ -33,6 +33,7 @@
     <module>sonar-ws-generator</module>
     <module>sonar-testing-harness</module>
     <module>plugins/sonar-xoo-plugin</module>
+    <module>codescan-application</module>
   </modules>
 
   <organization>

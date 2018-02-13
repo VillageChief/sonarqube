@@ -35,7 +35,7 @@ export default function SingleBranchHelperPopup(props: Props) {
         </p>
         <a
           className="button"
-          href="https://redirect.sonarsource.com/doc/branches.html"
+          href="https://www.code-scan.com/cloud/branches"
           target="_blank">
           {translate('about_page.read_documentation')}
         </a>
