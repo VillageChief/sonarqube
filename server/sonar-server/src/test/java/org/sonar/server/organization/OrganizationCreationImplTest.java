@@ -19,12 +19,14 @@
  */
 package org.sonar.server.organization;
 
+import java.util.HashSet;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import org.apache.commons.lang.RandomStringUtils;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.Before;
 import org.junit.rules.ExpectedException;
 import org.sonar.api.config.internal.MapSettings;
 import org.sonar.api.utils.System2;
@@ -110,37 +112,36 @@ public class OrganizationCreationImplTest {
   private OrganizationCreationImpl underTest = new OrganizationCreationImpl(dbClient, system2, uuidFactory, organizationValidation, settings.asConfig(), userIndexer,
     builtInQProfileRepositoryRule, defaultGroupCreator);
 
-  private UserDto someUser;
-
-  @Before
-  public void setUp() {
-    someUser = db.users().insertUser();
-    userIndexer.indexOnStartup(new HashSet<>());
-  }
 
   @Test
-  public void visibility_public_if_not_set() throws KeyConflictException {
+  public void visibility_public_if_not_set() throws OrganizationCreation.KeyConflictException {
 	builtInQProfileRepositoryRule.initialize();
-	OrganizationDto organization = underTest.create(dbSession, someUser, FULL_POPULATED_NEW_ORGANIZATION);
+	UserDto user = db.users().insertUser();
+	db.qualityGates().insertBuiltInQualityGate();
+	OrganizationDto organization = underTest.create(dbSession, user, FULL_POPULATED_NEW_ORGANIZATION);
 
     assertThat(db.organizations().getNewProjectPrivate(organization)).isFalse();
   }
 
   @Test
-  public void visibility_public_if_true() throws KeyConflictException {
+  public void visibility_public_if_true() throws OrganizationCreation.KeyConflictException {
 	builtInQProfileRepositoryRule.initialize();
+	UserDto user = db.users().insertUser();
+	db.qualityGates().insertBuiltInQualityGate();
 	settings.setProperty(CorePropertyDefinitions.ORGANIZATIONS_DEFAULT_PUBLIC_VISIBILITY, true);
-	OrganizationDto organization = underTest.create(dbSession, someUser, FULL_POPULATED_NEW_ORGANIZATION);
+	OrganizationDto organization = underTest.create(dbSession, user, FULL_POPULATED_NEW_ORGANIZATION);
 
     assertThat(db.organizations().getNewProjectPrivate(organization)).isFalse();
   }
   
   @Test
-  public void visibility_public_if_false() throws KeyConflictException {
+  public void visibility_public_if_false() throws OrganizationCreation.KeyConflictException {
 	builtInQProfileRepositoryRule.initialize();
+	UserDto user = db.users().insertUser();
+	db.qualityGates().insertBuiltInQualityGate();
 	settings.setProperty(CorePropertyDefinitions.ORGANIZATIONS_DEFAULT_PUBLIC_VISIBILITY, false);
-	OrganizationDto organization = underTest.create(dbSession, someUser, FULL_POPULATED_NEW_ORGANIZATION);
-
+	OrganizationDto organization = underTest.create(dbSession, user, FULL_POPULATED_NEW_ORGANIZATION);
+	
     assertThat(db.organizations().getNewProjectPrivate(organization)).isTrue();
   }
 

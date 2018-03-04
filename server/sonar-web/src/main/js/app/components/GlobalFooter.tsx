@@ -38,7 +38,7 @@ export default class GlobalFooter extends React.PureComponent<Props> {
   render() {
     const { hideLoggedInInfo, productionDatabase, sonarqubeVersion } = this.props;
     if (this.context.onSonarCloud) {
-      return <GlobalFooterSonarCloud />;
+      return <GlobalFooterSonarCloud sonarqubeVersion={sonarqubeVersion} />;
     }
 
     return (

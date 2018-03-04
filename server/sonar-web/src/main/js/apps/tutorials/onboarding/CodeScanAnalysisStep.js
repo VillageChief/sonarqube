@@ -1,6 +1,6 @@
 /*
  * SonarQube
- * Copyright (C) 2009-2017 SonarSource SA
+ * Copyright (C) 2009-2018 SonarSource SA
  * mailto:info AT sonarsource DOT com
  *
  * This program is free software; you can redistribute it and/or
@@ -78,13 +78,13 @@ export default class CodeScanAnalysisStep extends React.PureComponent {
           or individual Project`s `Project Analysis` Section under the Administration menu.
         </div>
         <div className="boxed-group-inner">
-        <iframe src="https://player.vimeo.com/video/246881519?VQ=HD720&autoplay=1" width="640" height="348" frameBorder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowFullScreen="true" />
-        </div>
-        <div className="boxed-group-inner">
             <a className="button" href="#" onClick={this.navigateToAnalysisClick}>
               Go there now
             </a>
             <i className="icon-check spacer-right" />
+        </div>
+        <div className="boxed-group-inner">
+        <iframe src="https://player.vimeo.com/video/246881519?VQ=HD720&autoplay=1" width="640" height="348" frameBorder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowFullScreen="true" />
         </div>
       </div>
     );

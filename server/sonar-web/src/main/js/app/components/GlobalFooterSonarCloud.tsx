@@ -19,6 +19,7 @@
  */
 import * as React from 'react';
 import { translate } from '../../helpers/l10n';
+import GlobalFooterBranding from './GlobalFooterBranding';
 
 export default function GlobalFooterSonarCloud(
   { sonarqubeVersion } /*: Props */
@@ -30,10 +31,7 @@ export default function GlobalFooterSonarCloud(
       </div>
       <GlobalFooterBranding />
       <div>
-        {!sonarqubeVersion &&
-          translateWithParameters('footer.version_x', sonarqubeVersion)}
-        {!sonarqubeVersion && ' - '}
-        <a href="http://www.gnu.org/licenses/lgpl-3.0.txt">{translate('footer.licence')}</a>
+        Version { sonarqubeVersion }
         {' - '}
         <a href="https://www.code-scan.com/tos/">{translate('footer.terms')}</a>
         {' - '}
