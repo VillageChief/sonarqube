@@ -128,8 +128,7 @@ public class SearchActionTest {
     db.organizations().addMember(barOrganization, user);
     db.organizations().addMember(fooOrganization, user);
     db.users().insertPermissionOnUser(barOrganization, user, ADMINISTER);
-    userSession.logIn(user).addPermission(ADMINISTER, barOrganization);
-
+    userSession.logIn(user).setRoot().addPermission(ADMINISTER, barOrganization);
     TestRequest request = ws.newRequest()
       .setMediaType(MediaTypes.JSON);
     populateRequest(request, null, 25);
@@ -140,7 +139,7 @@ public class SearchActionTest {
   }
 
   @Test
-  public void is_admin_available_for_each_organization() {
+  public void non_root_doesnt_return_all() {
     OrganizationDto userAdminOrganization = db.organizations().insert();
     OrganizationDto groupAdminOrganization = db.organizations().insert();
     OrganizationDto browseOrganization = db.organizations().insert();
@@ -148,6 +147,23 @@ public class SearchActionTest {
     GroupDto group = db.users().insertGroup(groupAdminOrganization);
     db.users().insertMember(group, user);
     userSession.logIn(user).addPermission(ADMINISTER, userAdminOrganization);
+    db.users().insertPermissionOnUser(userAdminOrganization, user, ADMINISTER);
+    db.users().insertPermissionOnGroup(group, ADMINISTER);
+
+    SearchWsResponse result = call(ws.newRequest());
+
+    assertThat(result.getOrganizationsList()).extracting(Organization::getKey, Organization::getIsAdmin).isEmpty();;
+  }
+
+  @Test
+  public void is_admin_available_for_each_organization() {
+    OrganizationDto userAdminOrganization = db.organizations().insert();
+    OrganizationDto groupAdminOrganization = db.organizations().insert();
+    OrganizationDto browseOrganization = db.organizations().insert();
+    UserDto user = db.users().insertUser();
+    GroupDto group = db.users().insertGroup(groupAdminOrganization);
+    db.users().insertMember(group, user);
+    userSession.logIn(user).setRoot().addPermission(ADMINISTER, userAdminOrganization);
     db.users().insertPermissionOnUser(userAdminOrganization, user, ADMINISTER);
     db.users().insertPermissionOnGroup(group, ADMINISTER);
 
@@ -241,6 +257,7 @@ public class SearchActionTest {
 
   @Test
   public void result_is_paginated() {
+    userSession.logIn().setRoot();
     when(system2.now()).thenReturn(SOME_DATE, SOME_DATE + 1_000, SOME_DATE + 2_000, SOME_DATE + 3_000, SOME_DATE + 5_000);
     db.organizations().insert(organization -> organization.setKey("key-3"));
     db.organizations().insert(organization -> organization.setKey("key-1"));
@@ -291,6 +308,7 @@ public class SearchActionTest {
   }
 
   private List<Organization> executeRequestAndReturnList(@Nullable Integer page, @Nullable Integer pageSize, String... keys) {
+    userSession.logIn().setRoot();
     return call(page, pageSize, keys).getOrganizationsList();
   }
 
