@@ -36,6 +36,14 @@ public class BillingValidationsProxyImpl implements BillingValidationsProxy {
   }
 
   @Override
+  public void checkOnAddMember(Organization organization, User user) {
+    if (billingValidationsExtension == null) {
+      return;
+    }
+    billingValidationsExtension.checkOnAddMember(organization, user);
+  }
+
+  @Override
   public void checkOnProjectAnalysis(Organization organization) {
     if (billingValidationsExtension == null) {
       return;
