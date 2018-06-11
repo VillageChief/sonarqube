@@ -58,10 +58,11 @@ export default class AddMemberForm extends React.PureComponent {
 
   handleSearch = (query /*: ?string */, ps /*: number */) => {
     const data = { organization: this.props.organization.key, ps, selected: 'deselected' };
-    if (!query) {
-      return searchMembers(data);
+    if (query && query.length >=2) {
+      return searchMembers({ ...data, q: query });
+    } else {
+      return Promise.resolve({ paging: { pageIndex: 1, pageSize: 50, total: 0 }, users: [] });
     }
-    return searchMembers({ ...data, q: query });
   };
 
   handleSubmit = (e /*: Object */) => {

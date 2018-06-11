@@ -19,12 +19,14 @@
  */
 package org.sonar.server.organization;
 
+import java.util.HashSet;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import org.apache.commons.lang.RandomStringUtils;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.Before;
 import org.junit.rules.ExpectedException;
 import org.sonar.api.config.internal.MapSettings;
 import org.sonar.api.utils.System2;
@@ -109,6 +111,39 @@ public class OrganizationCreationImplTest {
   private QualityGateFinder qualityGateFinder = new QualityGateFinder(dbClient);
   private OrganizationCreationImpl underTest = new OrganizationCreationImpl(dbClient, system2, uuidFactory, organizationValidation, settings.asConfig(), userIndexer,
     builtInQProfileRepositoryRule, defaultGroupCreator);
+
+
+  @Test
+  public void visibility_public_if_not_set() throws OrganizationCreation.KeyConflictException {
+	builtInQProfileRepositoryRule.initialize();
+	UserDto user = db.users().insertUser();
+	db.qualityGates().insertBuiltInQualityGate();
+	OrganizationDto organization = underTest.create(dbSession, user, FULL_POPULATED_NEW_ORGANIZATION);
+
+    assertThat(db.organizations().getNewProjectPrivate(organization)).isFalse();
+  }
+
+  @Test
+  public void visibility_public_if_true() throws OrganizationCreation.KeyConflictException {
+	builtInQProfileRepositoryRule.initialize();
+	UserDto user = db.users().insertUser();
+	db.qualityGates().insertBuiltInQualityGate();
+	settings.setProperty(CorePropertyDefinitions.ORGANIZATIONS_DEFAULT_PUBLIC_VISIBILITY, true);
+	OrganizationDto organization = underTest.create(dbSession, user, FULL_POPULATED_NEW_ORGANIZATION);
+
+    assertThat(db.organizations().getNewProjectPrivate(organization)).isFalse();
+  }
+  
+  @Test
+  public void visibility_public_if_false() throws OrganizationCreation.KeyConflictException {
+	builtInQProfileRepositoryRule.initialize();
+	UserDto user = db.users().insertUser();
+	db.qualityGates().insertBuiltInQualityGate();
+	settings.setProperty(CorePropertyDefinitions.ORGANIZATIONS_DEFAULT_PUBLIC_VISIBILITY, false);
+	OrganizationDto organization = underTest.create(dbSession, user, FULL_POPULATED_NEW_ORGANIZATION);
+	
+    assertThat(db.organizations().getNewProjectPrivate(organization)).isTrue();
+  }
 
   @Test
   public void create_throws_NPE_if_NewOrganization_arg_is_null() throws OrganizationCreation.KeyConflictException {

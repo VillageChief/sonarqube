@@ -26,7 +26,7 @@ function DefaultHelmetContainer({ children, onSonarCloud }) {
   return (
     <div>
       <Helmet
-        defaultTitle={onSonarCloud && onSonarCloud.value === 'true' ? 'SonarCloud' : 'SonarQube'}
+        defaultTitle={onSonarCloud && onSonarCloud.value === 'true' ? 'CodeScan' : 'SonarQube'}
       />
       {children}
     </div>

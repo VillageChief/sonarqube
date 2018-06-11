@@ -24,6 +24,8 @@ import CreateOrganizationForm from '../../../../apps/account/organizations/Creat
 import PlusIcon from '../../../../components/icons-components/PlusIcon';
 import Dropdown from '../../../../components/controls/Dropdown';
 import { translate } from '../../../../helpers/l10n';
+import { RawQuery } from '../../../../helpers/query';
+import { getBaseUrl } from '../../../../helpers/urls';
 
 interface Props {
   openOnboardingTutorial: () => void;
@@ -45,6 +47,23 @@ export default class GlobalNavPlus extends React.PureComponent<Props, State> {
 
   handleNewProjectClick = (event: React.SyntheticEvent<HTMLAnchorElement>) => {
     event.preventDefault();
+
+    if ( window.location.pathname.startsWith(getBaseUrl() + "/organizations/") ) {
+      var b = window.location.pathname.substring(0, window.location.pathname.indexOf("/", (getBaseUrl() + '/organizations/').length));
+      window.location.href = b + '/extension/developer/projects';
+      return;
+    }else if ( window.location.search.indexOf("id=") >= 0 ) {
+      var vars = window.location.search.substring(1).split('&');
+      for (var i = 0; i < vars.length; i++) {
+          var pair = vars[i].split('=');
+          if (decodeURIComponent(pair[0]) == 'id') {
+              window.location.href = getBaseUrl() + '/project/admin/extension/developer/project?id=' + pair[1];
+              return;
+          }
+      }
+    }
+
+    //fallback
     this.props.openOnboardingTutorial();
   };
 

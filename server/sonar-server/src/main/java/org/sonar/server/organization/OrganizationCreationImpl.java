@@ -195,6 +195,11 @@ public class OrganizationCreationImpl implements OrganizationCreation {
       .setAvatarUrl(newOrganization.getAvatar());
     Arrays.stream(extendCreation).forEach(c -> c.accept(res));
     dbClient.organizationDao().insert(dbSession, res, false);
+    
+    Optional<Boolean> publicVisibility = config.getBoolean(CorePropertyDefinitions.ORGANIZATIONS_DEFAULT_PUBLIC_VISIBILITY);
+    if ( publicVisibility.isPresent() && publicVisibility.get() == false ) {
+    	dbClient.organizationDao().setNewProjectPrivate(dbSession, res, true);
+    }
     return res;
   }
 

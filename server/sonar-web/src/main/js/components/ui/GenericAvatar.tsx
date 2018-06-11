@@ -28,6 +28,8 @@ interface Props {
 }
 
 export default function GenericAvatar({ className, name, size }: Props) {
+  if ( typeof(name) == 'undefined' )
+    name = 'X X';
   const color = stringToColor(name);
 
   let text = '';

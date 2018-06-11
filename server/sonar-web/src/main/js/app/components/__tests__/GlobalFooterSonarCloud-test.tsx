@@ -22,5 +22,5 @@ import { shallow } from 'enzyme';
 import GlobalFooterSonarCloud from '../GlobalFooterSonarCloud';
 
 it('should render correctly', () => {
-  expect(shallow(<GlobalFooterSonarCloud />)).toMatchSnapshot();
+  expect(shallow(<GlobalFooterSonarCloud sonarqubeVersion="test"/>)).toMatchSnapshot();
 });

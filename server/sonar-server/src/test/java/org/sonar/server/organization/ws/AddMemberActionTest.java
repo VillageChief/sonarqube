@@ -51,8 +51,10 @@ import org.sonar.server.usergroups.DefaultGroupFinder;
 import org.sonar.server.ws.TestRequest;
 import org.sonar.server.ws.WsActionTester;
 import org.sonarqube.ws.Organizations.AddMemberWsResponse;
+import org.sonar.server.organization.BillingValidationsProxy;
 
 import static java.lang.String.format;
+import static org.mockito.Mockito.mock;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.sonar.core.util.Protobuf.setNullable;
 import static org.sonar.db.permission.OrganizationPermission.ADMINISTER;
@@ -75,7 +77,7 @@ public class AddMemberActionTest {
   private DbSession dbSession = db.getSession();
 
   private WsActionTester ws = new WsActionTester(
-    new AddMemberAction(dbClient, userSession, new UserIndexer(dbClient, es.client()), new DefaultGroupFinder(dbClient), new AvatarResolverImpl()));
+    new AddMemberAction(dbClient, userSession, new UserIndexer(dbClient, es.client()), new DefaultGroupFinder(dbClient), new AvatarResolverImpl(), mock(BillingValidationsProxy.class)));
 
   @Test
   public void add_member_in_db_and_user_index() {

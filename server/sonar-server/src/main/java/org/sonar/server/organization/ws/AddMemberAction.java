@@ -28,6 +28,8 @@ import org.sonar.db.DbSession;
 import org.sonar.db.organization.OrganizationDto;
 import org.sonar.db.organization.OrganizationMemberDto;
 import org.sonar.db.permission.OrganizationPermission;
+import org.sonar.server.organization.BillingValidations;
+import org.sonar.server.organization.BillingValidationsProxy;
 import org.sonar.db.user.GroupMembershipQuery;
 import org.sonar.db.user.UserDto;
 import org.sonar.db.user.UserGroupDto;
@@ -54,13 +56,15 @@ public class AddMemberAction implements OrganizationsWsAction {
   private final UserIndexer userIndexer;
   private final DefaultGroupFinder defaultGroupFinder;
   private final AvatarResolver avatarResolver;
+  private final BillingValidationsProxy billingValidations;
 
-  public AddMemberAction(DbClient dbClient, UserSession userSession, UserIndexer userIndexer, DefaultGroupFinder defaultGroupFinder, AvatarResolver avatarResolver) {
+  public AddMemberAction(DbClient dbClient, UserSession userSession, UserIndexer userIndexer, DefaultGroupFinder defaultGroupFinder, AvatarResolver avatarResolver, BillingValidationsProxy billingValidations) {
     this.dbClient = dbClient;
     this.userSession = userSession;
     this.userIndexer = userIndexer;
     this.defaultGroupFinder = defaultGroupFinder;
     this.avatarResolver = avatarResolver;
+    this.billingValidations = billingValidations;
   }
 
   @Override
@@ -112,7 +116,7 @@ public class AddMemberAction implements OrganizationsWsAction {
     if (isMemberOf(dbSession, organization, user)) {
       return;
     }
-
+    checkCanAddMember(organization, user);
     dbClient.organizationMemberDao().insert(dbSession, new OrganizationMemberDto()
       .setOrganizationUuid(organization.getUuid())
       .setUserId(user.getId()));
@@ -136,4 +140,12 @@ public class AddMemberAction implements OrganizationsWsAction {
     return dbClient.organizationMemberDao().select(dbSession, organizationDto.getUuid(), userDto.getId()).isPresent();
   }
 
+  private void checkCanAddMember(OrganizationDto organization, UserDto user) {
+    try {
+      billingValidations.checkOnAddMember(new BillingValidations.Organization(organization.getKey(), organization.getUuid()),
+	new BillingValidations.User(user.getId(), user.getLogin(), user.getEmail()));
+    } catch (BillingValidations.BillingValidationsException e) {
+      throw new IllegalArgumentException(e.getMessage());
+    }
+  }
 }

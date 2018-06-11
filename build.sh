@@ -2,4 +2,4 @@
 
 ./stop.sh
 
-./gradlew build $*
+TZ=UTC ./gradlew build $*
