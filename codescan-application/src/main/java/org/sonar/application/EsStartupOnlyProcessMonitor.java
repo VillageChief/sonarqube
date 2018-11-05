@@ -27,6 +27,7 @@ import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -60,6 +61,7 @@ import static org.sonar.application.EsStartupOnlyProcessMonitor.Status.GREEN;
 import static org.sonar.application.EsStartupOnlyProcessMonitor.Status.KO;
 import static org.sonar.application.EsStartupOnlyProcessMonitor.Status.RED;
 import static org.sonar.application.EsStartupOnlyProcessMonitor.Status.YELLOW;
+import static org.sonar.process.ProcessProperties.Property.CLUSTER_SEARCH_HOSTS;
 
 import com.google.common.net.HostAndPort;
 
@@ -224,8 +226,15 @@ public class EsStartupOnlyProcessMonitor implements ProcessMonitor {
 	    esSettings.put("cluster.name", props.value("sonar.cluster.name"));
 
 	    TransportClient nativeClient = new MinimalTransportClient(esSettings.build());
-	    HostAndPort host = HostAndPort.fromParts(props.value("sonar.search.host"), props.valueAsInt("sonar.search.port"));
-	    addHostToClient(host, nativeClient);
+	    esSettings.put("client.transport.sniff", true);
+	    LOG.info("Hosts: {}", props.value(CLUSTER_SEARCH_HOSTS.getKey()));
+	    Arrays.stream(props.value(CLUSTER_SEARCH_HOSTS.getKey()).split(","))
+			  .map(HostAndPort::fromString)
+			  .forEach(h -> {
+			  	LOG.info("Checking ES server: {}", h);
+			  	addHostToClient(h, nativeClient);
+			  });
+
 	    if (LOG.isDebugEnabled()) {
 	      LOG.debug("Connected to Elasticsearch node: [{}] on cluster [{}]", displayedAddresses(nativeClient), props.value("sonar.cluster.name"));
 	    }

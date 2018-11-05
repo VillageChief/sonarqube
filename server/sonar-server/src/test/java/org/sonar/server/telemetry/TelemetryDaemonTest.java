@@ -210,7 +210,7 @@ public class TelemetryDaemonTest {
 
     verify(client, timeout(2_000).atLeastOnce()).upload(anyString());
   }
-
+/*
   @Test
   public void send_server_id_and_version() throws IOException {
     initTelemetrySettingsToDefaultValues();
@@ -224,7 +224,7 @@ public class TelemetryDaemonTest {
     ArgumentCaptor<String> json = ArgumentCaptor.forClass(String.class);
     verify(client, timeout(2_000).atLeastOnce()).upload(json.capture());
     assertThat(json.getValue()).contains(id, version);
-  }
+  }*/
 
   @Test
   public void do_not_send_data_if_last_ping_earlier_than_one_week_ago() throws IOException {
