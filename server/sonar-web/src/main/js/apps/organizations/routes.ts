@@ -72,6 +72,12 @@ const routes = [
         childRoutes: qualityGatesRoutes
       },
       {
+        path: 'extension/:pluginKey/:extensionKey',
+        component: lazyLoad(() =>
+          import('../../app/components/extensions/OrganizationPageExtension')
+        )
+      },
+      {
         component: lazyLoad(() =>
           import('./components/OrganizationAccessContainer').then(lib => ({
             default: lib.OrganizationAdminAccess
@@ -93,13 +99,7 @@ const routes = [
             path: 'projects_management',
             component: lazyLoad(() => import('../projectsManagement/AppContainer'))
           },
-          { path: 'webhooks', childRoutes: webhooksRoutes },
-          {
-            path: 'extension/:pluginKey/:extensionKey',
-            component: lazyLoad(() =>
-              import('../../app/components/extensions/OrganizationPageExtension')
-            )
-          }
+          { path: 'webhooks', childRoutes: webhooksRoutes }
         ]
       }
     ]

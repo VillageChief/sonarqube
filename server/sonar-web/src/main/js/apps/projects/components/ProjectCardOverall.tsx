@@ -92,7 +92,7 @@ export default function ProjectCardOverall({ height, organization, project }: Pr
         <div className="boxed-group-inner">
           <div className="project-card-not-analyzed">
             <span className="note">{translate('projects.not_analyzed')}</span>
-            <Link className="button spacer-left" to={getProjectUrl(project.key)}>
+            <Link className="button spacer-left" to={"/project/extension/developer/project?id=" + project.key}>
               {translate('projects.configure_analysis')}
             </Link>
           </div>

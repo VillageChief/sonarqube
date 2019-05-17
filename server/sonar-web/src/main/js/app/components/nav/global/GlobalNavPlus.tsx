@@ -29,6 +29,7 @@ import { isSonarCloud } from '../../../../helpers/system';
 import { getPortfolioAdminUrl, getPortfolioUrl } from '../../../../helpers/urls';
 import { hasGlobalPermission } from '../../../../helpers/users';
 import { OnboardingContextShape } from '../../OnboardingContext';
+import { getBaseUrl } from '../../../../helpers/urls';
 
 interface Props {
   appState: Pick<T.AppState, 'qualifiers'>;
@@ -65,6 +66,23 @@ export class GlobalNavPlus extends React.PureComponent<Props & WithRouterProps, 
 
   handleNewProjectClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
+
+    if ( window.location.pathname.startsWith(getBaseUrl() + "/organizations/") ) {
+      var b = window.location.pathname.substring(0, window.location.pathname.indexOf("/", (getBaseUrl() + '/organizations/').length));
+      window.location.href = b + '/extension/developer/projects';
+      return;
+    }else if ( window.location.search.indexOf("id=") >= 0 ) {
+      var vars = window.location.search.substring(1).split('&');
+      for (var i = 0; i < vars.length; i++) {
+          var pair = vars[i].split('=');
+          if (decodeURIComponent(pair[0]) == 'id') {
+              window.location.href = getBaseUrl() + '/project/extension/developer/project?id=' + pair[1];
+              return;
+          }
+      }
+    }
+
+    //fallback
     this.props.openProjectOnboarding();
   };
 

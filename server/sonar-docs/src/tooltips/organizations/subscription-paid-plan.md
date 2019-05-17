@@ -2,4 +2,4 @@ This organization is subscribed to a paid plan, allowing private projects. Its p
 
 ---
 
-See also: [Organization Visibility](/organizations/organization-visibility/)
+See also: [Organizations](https://docs.codescan.io/hc/en-us/articles/360028097992-Organizations)

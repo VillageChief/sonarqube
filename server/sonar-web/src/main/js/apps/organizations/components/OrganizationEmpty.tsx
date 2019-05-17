@@ -35,7 +35,8 @@ interface Props {
 
 export class OrganizationEmpty extends React.PureComponent<Props> {
   handleNewProjectClick = () => {
-    this.props.openProjectOnboarding(this.props.organization);
+    const { organization } = this.props;
+    this.props.router.push(`/organizations/${organization.key}/extension/developer/projects`);
   };
 
   handleAddMembersClick = () => {

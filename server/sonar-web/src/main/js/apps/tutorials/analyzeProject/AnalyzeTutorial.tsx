@@ -18,6 +18,7 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 import * as React from 'react';
+import { withRouter, WithRouterProps } from 'react-router';
 import AnalyzeTutorialSuggestion from './AnalyzeTutorialSuggestion';
 import ProjectAnalysisStep from '../components/ProjectAnalysisStep';
 import TokenStep from '../components/TokenStep';
@@ -26,23 +27,25 @@ import { translate } from '../../../helpers/l10n';
 import InstanceMessage from '../../../components/common/InstanceMessage';
 import { isSonarCloud } from '../../../helpers/system';
 import '../styles.css';
+import { getBaseUrl } from '../../../helpers/urls';
 
 enum Steps {
   ANALYSIS,
   TOKEN
 }
 
-interface Props {
+interface OwnProps {
   component: T.Component;
   currentUser: T.LoggedInUser;
 }
+type Props = OwnProps & WithRouterProps;
 
 interface State {
   step: Steps;
   token?: string;
 }
 
-export default class AnalyzeTutorial extends React.PureComponent<Props, State> {
+class AnalyzeTutorial extends React.PureComponent<Props, State> {
   state: State = { step: Steps.TOKEN };
 
   handleTokenDone = (token: string) => {
@@ -52,6 +55,12 @@ export default class AnalyzeTutorial extends React.PureComponent<Props, State> {
   handleTokenOpen = () => {
     this.setState({ step: Steps.TOKEN });
   };
+
+  componentDidMount() {
+    this.props.router.push(
+      getBaseUrl() +
+      `/project/extension/developer/project?id=${this.props.component.key}&qualifier=${this.props.component.qualifier}`);
+  }
 
   render() {
     const { component, currentUser } = this.props;
@@ -95,3 +104,5 @@ export default class AnalyzeTutorial extends React.PureComponent<Props, State> {
     );
   }
 }
+
+export default withRouter(AnalyzeTutorial);

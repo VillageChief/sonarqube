@@ -154,7 +154,7 @@ export class App extends React.PureComponent<Props, State> {
             <Link
               className="spacer-left"
               target="_blank"
-              to={{ pathname: '/documentation/user-guide/security-reports/' }}>
+              to={{ pathname: 'https://docs.codescan.io/hc/en-us/articles/360028388051-Security-Reports' }}>
               {translate('learn_more')}
             </Link>
             {this.renderAdditionalRulesMessage()}

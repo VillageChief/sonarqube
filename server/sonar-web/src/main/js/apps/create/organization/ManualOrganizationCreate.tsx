@@ -37,39 +37,24 @@ interface Props {
 }
 
 export default class ManualOrganizationCreate extends React.PureComponent<Props> {
-  handleCreateOrganization = () => {
-    const { organization } = this.props;
-    if (!organization) {
-      return Promise.reject();
-    }
-    return this.props.createOrganization(organization);
+  handleCreateOrganization = (organization: T.Organization) => {
+    const { handleOrgDetailsFinish, createOrganization, onDone } = this.props;
+    return handleOrgDetailsFinish(organization).then(() => {
+      createOrganization(organization).then(() => {
+        onDone();
+      });
+    });
   };
 
   render() {
-    const { className, organization, subscriptionPlans } = this.props;
+    const { className, organization } = this.props;
     return (
       <div className={className}>
-        <OrganizationDetailsStep
-          finished={organization !== undefined}
-          onOpen={this.props.handleOrgDetailsStepOpen}
-          open={this.props.step === Step.OrganizationDetails}
-          organization={organization}>
-          <OrganizationDetailsForm
-            onContinue={this.props.handleOrgDetailsFinish}
-            organization={organization}
-            submitText={translate('continue')}
-          />
-        </OrganizationDetailsStep>
-
-        {subscriptionPlans !== undefined && (
-          <PlanStep
-            createOrganization={this.handleCreateOrganization}
-            onDone={this.props.onDone}
-            onUpgradeFail={this.props.onUpgradeFail}
-            open={this.props.step === Step.Plan}
-            subscriptionPlans={subscriptionPlans}
-          />
-        )}
+        <OrganizationDetailsForm
+          onContinue={this.handleCreateOrganization}
+          organization={organization}
+          submitText={translate('my_account.create_organization')}
+        />
       </div>
     );
   }

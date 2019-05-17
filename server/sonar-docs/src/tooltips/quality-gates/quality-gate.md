@@ -2,4 +2,4 @@ A Quality Gate is a set of measure-based, Boolean conditions. It helps you know 
 
 ---
 
-[Learn more](/user-guide/quality-gates/)
+[Learn more](https://docs.codescan.io/hc/en-us/articles/360023044452-Customising-Quality-Gates)

@@ -21,10 +21,10 @@ export function getSystemStatus(): string {
   return (window as any).serverStatus;
 }
 
-export function getInstance(): 'SonarQube' | 'SonarCloud' {
+export function getInstance(): 'SonarQube' | 'CodeScanCloud' {
   return (window as any).instance;
 }
 
 export function isSonarCloud() {
-  return getInstance() === 'SonarCloud';
+  return getInstance() === 'CodeScanCloud';
 }

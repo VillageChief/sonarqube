@@ -19,6 +19,7 @@ include 'server:sonar-vsts'
 include 'server:sonar-web'
 
 include 'sonar-application'
+include 'codescan-application'
 include 'sonar-check-api'
 include 'sonar-core'
 include 'sonar-duplications'

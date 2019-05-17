@@ -49,11 +49,13 @@ public class MemberUpdater {
   private final DbClient dbClient;
   private final DefaultGroupFinder defaultGroupFinder;
   private final UserIndexer userIndexer;
+  private final BillingValidationsProxy billingValidations;
 
-  public MemberUpdater(DbClient dbClient, DefaultGroupFinder defaultGroupFinder, UserIndexer userIndexer) {
+  public MemberUpdater(DbClient dbClient, DefaultGroupFinder defaultGroupFinder, UserIndexer userIndexer, BillingValidationsProxy billingValidations) {
     this.dbClient = dbClient;
     this.defaultGroupFinder = defaultGroupFinder;
     this.userIndexer = userIndexer;
+    this.billingValidations = billingValidations;
   }
 
   public void addMember(DbSession dbSession, OrganizationDto organization, UserDto user) {
@@ -65,12 +67,23 @@ public class MemberUpdater {
     List<UserDto> usersToAdd = users.stream()
       .filter(UserDto::isActive)
       .filter(u -> !currentMemberIds.contains(u.getId()))
+      .filter(u -> canAddMember(organization, u))
       .collect(toList());
     if (usersToAdd.isEmpty()) {
       return;
     }
     usersToAdd.forEach(u -> addMemberInDb(dbSession, organization, u));
     userIndexer.commitAndIndex(dbSession, usersToAdd);
+  }
+
+  private boolean canAddMember(OrganizationDto organization, UserDto user) {
+    try {
+      billingValidations.checkBeforeAddMember(new BillingValidations.Organization(organization.getKey(), organization.getUuid(), organization.getName()),
+              new BillingValidations.User(user.getId(), user.getLogin(), user.getEmail()));
+      return true;
+    } catch (BillingValidations.BillingValidationsException e) {
+      return false;
+    }
   }
 
   private void addMemberInDb(DbSession dbSession, OrganizationDto organization, UserDto user) {

@@ -1,0 +1,138 @@
+sonarqube {
+  properties {
+    property 'sonar.projectName', "${projectTitle} :: Application"
+  }
+}
+
+configurations {
+  zip
+  jsw
+  scanner
+  web
+  jdbc_mssql {
+    transitive = false
+  }
+  jdbc_mysql {
+    transitive = false
+  }
+  jdbc_postgresql {
+    transitive = false
+  }
+  jdbc_h2 {
+    transitive = false
+  }
+  bundledPlugin {
+    transitive = false
+  }
+}
+
+dependencies {
+  // please keep list ordered
+
+  compile 'org.elasticsearch.client:transport'
+  compile project(':server:sonar-ce')
+  compile project(':server:sonar-main')
+  compile project(':server:sonar-process')
+  compile project(':server:sonar-server')
+
+  compileOnly 'com.google.code.findbugs:jsr305'
+
+  scanner project(path: ':sonar-scanner-engine-shaded', configuration: 'shadow')
+  web project(':server:sonar-web')
+
+  jdbc_mysql 'mysql:mysql-connector-java'
+
+  testCompile 'junit:junit'
+  testCompile 'org.assertj:assertj-core'
+  testCompile 'org.mockito:mockito-core'
+}
+
+jar {
+  manifest {
+    attributes(
+      'Class-Path': configurations.compile.resolvedConfiguration.files.collect { "common/${it.getName()}" }.join(' '),
+      'Main-Class': 'org.sonar.application.App'
+    )
+  }
+}
+
+task zip(type: Zip, dependsOn: [configurations.compile]) {
+  duplicatesStrategy DuplicatesStrategy.EXCLUDE
+  def archiveDir = "sonarqube-$version"
+
+  into("${archiveDir}/") {
+    from file('src/main/assembly')
+    exclude 'elasticsearch/modules/lang-expression/**'
+    exclude 'elasticsearch/modules/lang-groovy/**'
+    exclude 'elasticsearch/modules/lang-mustache/**'
+    exclude 'elasticsearch/modules/lang-painless/**'
+    exclude 'elasticsearch/modules/transport-netty3/**'
+  }
+  // Create the empty dir (plugins) required by elasticsearch
+  into("${archiveDir}/elasticsearch/") {
+    from "$buildDir/elasticsearch"
+  }
+  into("${archiveDir}/lib/") {
+    from jar
+  }
+  into("${archiveDir}/extensions/plugins/") {
+    from configurations.bundledPlugin
+  }
+  into("${archiveDir}/lib/jsw/") {
+    from configurations.jsw
+  }
+  into("${archiveDir}/lib/scanner/") {
+    from configurations.scanner
+  }
+  into("${archiveDir}/lib/common/") {
+    from configurations.compile
+  }
+  into("${archiveDir}/web/") {
+    from tasks.getByPath(':server:sonar-web:yarn_run').outputs
+    from tasks.getByPath(':server:sonar-vsts:yarn_run').outputs
+  }
+  into("${archiveDir}/lib/jdbc/mysql/") {
+    from configurations.jdbc_mysql
+  }
+}
+// Create the empty dir required by elasticsearch
+zip.doFirst {
+  new File(buildDir, 'elasticsearch/plugins').mkdirs()
+}
+// Check the size of the archive
+zip.doLast {
+  def minLength = 87807708
+  def maxLength = 95807708
+  def length = new File(distsDir, archiveName).length()
+  if (length < minLength)
+    throw new GradleException("$archiveName size ($length) too small. Min is $minLength")
+  if (length > maxLength)
+    throw new GradleException("$distsDir/$archiveName size ($length) too large. Max is $maxLength")
+}
+assemble.dependsOn zip
+
+// the script start.sh unpacks OSS distribution into $buildDir/distributions/sonarqube-oss.
+// This directory should be deleted when the zip is changed.
+task cleanLocalUnzippedDir(dependsOn: zip) {
+  def unzippedDir = file("$buildDir/distributions/codescan-$version")
+  inputs.files(file("$buildDir/distributions/codescan-application-${version}.zip"))
+  outputs.upToDateWhen { true }
+
+  doLast {
+    println("delete directory ${unzippedDir}")
+    project.delete(unzippedDir)
+  }
+}
+assemble.dependsOn cleanLocalUnzippedDir
+
+artifacts { zip zip }
+
+artifactoryPublish.skip = false
+
+publishing {
+  publications {
+    mavenJava(MavenPublication) {
+      artifact zip
+    }
+  }
+}

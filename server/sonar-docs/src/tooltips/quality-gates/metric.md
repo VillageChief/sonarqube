@@ -2,4 +2,4 @@ Metrics are code qualities that can be measured, such as the number of Bugs in N
 
 ---
 
-See also: [Metric definitions](/user-guide/metric-definitions/)
+See also: [Metric definitions](https://docs.codescan.io/hc/en-us/articles/360028388991-Metric-Definitions-)

@@ -68,18 +68,18 @@ public class EsClientProvider extends ProviderAdapter {
 
       boolean clusterEnabled = config.getBoolean(CLUSTER_ENABLED.getKey()).orElse(false);
       boolean searchNode = !clusterEnabled || SEARCH.equals(NodeType.parse(config.get(CLUSTER_NODE_TYPE.getKey()).orElse(null)));
-      final TransportClient nativeClient = new MinimalTransportClient(esSettings.build());
-      if (clusterEnabled && !searchNode) {
+      /*if (clusterEnabled && !searchNode) {*/
         esSettings.put("client.transport.sniff", true);
+        final TransportClient nativeClient = new MinimalTransportClient(esSettings.build());
         Arrays.stream(config.getStringArray(CLUSTER_SEARCH_HOSTS.getKey()))
           .map(HostAndPort::fromString)
           .forEach(h -> addHostToClient(h, nativeClient));
         LOGGER.info("Connected to remote Elasticsearch: [{}]", displayedAddresses(nativeClient));
-      } else {
+      /*} else
         HostAndPort host = HostAndPort.fromParts(config.get(SEARCH_HOST.getKey()).get(), config.getInt(SEARCH_PORT.getKey()).get());
         addHostToClient(host, nativeClient);
         LOGGER.info("Connected to local Elasticsearch: [{}]", displayedAddresses(nativeClient));
-      }
+      }*/
 
       cache = new EsClient(nativeClient);
     }

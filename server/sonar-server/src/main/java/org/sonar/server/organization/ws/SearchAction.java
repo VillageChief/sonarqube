@@ -186,6 +186,11 @@ public class SearchAction implements OrganizationsWsAction {
   @CheckForNull
   private Integer getUserIdIfFilterOnMembership(Request request) {
     boolean filterOnAuthenticatedUser = request.mandatoryParamAsBoolean(PARAM_MEMBER);
-    return (userSession.isLoggedIn() && filterOnAuthenticatedUser) ? userSession.getUserId() : null;
+    //return (userSession.isLoggedIn() && filterOnAuthenticatedUser) ? userSession.getUserId() : null;
+    if ( !userSession.isLoggedIn() )
+	return -1; //not allowed
+    if ( userSession.isRoot() )
+	return filterOnAuthenticatedUser ? userSession.getUserId() : null; //admin allowed to show all
+    return userSession.getUserId(); //only show own
   }
 }

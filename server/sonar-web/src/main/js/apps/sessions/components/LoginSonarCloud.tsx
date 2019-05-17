@@ -71,7 +71,7 @@ export function LoginSonarCloud({
             width={36}
           />
           <h1 className="sonarcloud-login-title">
-            {translate('login.login_or_signup_to_sonarcloud')}
+            Log into CodeScan Cloud
           </h1>
         </div>
 

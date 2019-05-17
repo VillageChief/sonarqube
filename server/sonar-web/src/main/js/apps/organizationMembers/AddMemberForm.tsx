@@ -18,6 +18,7 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 import * as React from 'react';
+import { Link } from 'react-router';
 import UsersSelectSearch from '../users/components/UsersSelectSearch';
 import { searchMembers } from '../../api/organizations';
 import Modal from '../../components/controls/Modal';
@@ -50,10 +51,11 @@ export default class AddMemberForm extends React.PureComponent<Props, State> {
 
   handleSearch = (query: string | undefined, ps: number) => {
     const data = { organization: this.props.organization.key, ps, selected: 'deselected' };
-    if (!query) {
-      return searchMembers(data);
+    if (query && query.length >=2) {
+      return searchMembers({ ...data, q: query });
+    } else {
+      return Promise.resolve({ paging: { pageIndex: 1, pageSize: 50, total: 0 }, users: [] });
     }
-    return searchMembers({ ...data, q: query });
   };
 
   handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -107,6 +109,9 @@ export default class AddMemberForm extends React.PureComponent<Props, State> {
         <Button key="add-member-button" onClick={this.openForm}>
           {translate('organization.members.add')}
         </Button>
+        <Link to={"/organizations/" + this.props.organization.key + "/extension/developer/invite_users"} className="button little-spacer-left">
+          Invite Member
+        </Link>
         {this.state.open && this.renderModal()}
       </>
     );

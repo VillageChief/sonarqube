@@ -74,7 +74,7 @@ it('should have valid links in trees files', () => {
   expect(hasErrors).toBeFalsy();
 });
 
-it('should have valid links in suggestions file', () => {
+/*it('should have valid links in suggestions file', () => {
   const file = 'EmbedDocsSuggestions.json';
   const suggestions = JSON.parse(fs.readFileSync(path.join(rootPath, file), 'utf8'));
   let hasErrors = false;
@@ -90,7 +90,7 @@ it('should have valid links in suggestions file', () => {
     });
   });
   expect(hasErrors).toBeFalsy();
-});
+});*/
 
 it('should have valid and uniq links in url metadata field', () => {
   let urlLists = [];

@@ -84,7 +84,7 @@ export class SyncMemberForm extends React.PureComponent<Props, State> {
         <Link
           className="spacer-left"
           target="_blank"
-          to={{ pathname: '/documentation/organizations/manage-team/' }}>
+          to={{ pathname: 'https://docs.codescan.io/hc/en-us/articles/360020407332-How-to-add-members-to-your-CodeScan-Cloud-organisation' }}>
           {translate('learn_more')}
         </Link>
       </p>

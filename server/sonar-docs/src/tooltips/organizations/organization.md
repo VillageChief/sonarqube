@@ -2,4 +2,4 @@ An organization is a space where a team or a whole company can collaborate acros
 
 ---
 
-See also: [Organizations](/organizations/overview/) and [Pricing](/sonarcloud-pricing/)
+See also: [Organizations](https://docs.codescan.io/hc/en-us/articles/360028097992-Organizations) and [Pricing](https://www.codescan.io/pricing/calculator/)

@@ -2,4 +2,4 @@ For each Quality Gate condition you must choose the metric to be tested, the thr
 
 ---
 
-See also: [Fixing the Water Leak](/user-guide/fixing-the-water-leak/)
+See also: [New Code Period](https://docs.codescan.io/hc/en-us/articles/360011880472-SonarQube-New-Code-Periods)

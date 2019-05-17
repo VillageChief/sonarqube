@@ -19,8 +19,6 @@
  */
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { keyBy } from 'lodash';
-import { Link } from 'react-router';
 import { Location } from 'history';
 import AboutProjects from './AboutProjects';
 import AboutLanguages from './AboutLanguages';
@@ -56,7 +54,6 @@ interface Props {
 interface State {
   issueTypes?: { [key: string]: { count: number } };
   loading: boolean;
-  projectsCount: number;
 }
 
 class AboutApp extends React.PureComponent<Props, State> {
@@ -64,13 +61,15 @@ class AboutApp extends React.PureComponent<Props, State> {
 
   state: State = {
     loading: true,
-    projectsCount: 0
   };
 
   componentDidMount() {
     this.mounted = true;
-    this.loadData();
-    addWhitePageClass();
+    window.location.href = 'https://www.codescan.io/cloud/';
+    document.body.classList.add('white-page');
+    if (document.documentElement) {
+      document.documentElement.classList.add('white-page');
+    }
   }
 
   componentWillUnmount() {
@@ -78,109 +77,8 @@ class AboutApp extends React.PureComponent<Props, State> {
     removeWhitePageClass();
   }
 
-  loadProjects() {
-    return searchProjects({ ps: 1 }).then(r => r.paging.total);
-  }
-
-  loadIssues() {
-    return getFacet({ resolved: false }, 'types');
-  }
-
-  loadCustomText() {
-    return this.props.fetchAboutPageSettings();
-  }
-
-  loadData() {
-    Promise.all([this.loadProjects(), this.loadIssues(), this.loadCustomText()]).then(
-      responses => {
-        if (this.mounted) {
-          const [projectsCount, issues] = responses;
-          const issueTypes = keyBy(issues.facet, 'val');
-          this.setState({ projectsCount, issueTypes, loading: false });
-        }
-      },
-      () => {
-        if (this.mounted) {
-          this.setState({ loading: false });
-        }
-      }
-    );
-  }
-
   render() {
-    const { customText } = this.props;
-    const { loading, issueTypes, projectsCount } = this.state;
-
-    let bugs;
-    let vulnerabilities;
-    let codeSmells;
-    if (!loading && issueTypes) {
-      bugs = issueTypes['BUG'] && issueTypes['BUG'].count;
-      vulnerabilities = issueTypes['VULNERABILITY'] && issueTypes['VULNERABILITY'].count;
-      codeSmells = issueTypes['CODE_SMELL'] && issueTypes['CODE_SMELL'].count;
-    }
-
-    return (
-      <GlobalContainer location={this.props.location}>
-        <div className="page page-limited about-page" id="about-page">
-          <div className="about-page-entry">
-            <div className="about-page-intro">
-              <h1 className="big-spacer-bottom">{translate('layout.sonar.slogan')}</h1>
-              {!this.props.currentUser.isLoggedIn && (
-                <Link className="button button-active big-spacer-right" to="/sessions/new">
-                  {translate('layout.login')}
-                </Link>
-              )}
-              <a
-                className="button"
-                href="https://redirect.sonarsource.com/doc/home.html"
-                rel="noopener noreferrer"
-                target="_blank">
-                {translate('about_page.read_documentation')}
-              </a>
-            </div>
-
-            <div className="about-page-instance">
-              <AboutProjects count={projectsCount} loading={loading} />
-              <EntryIssueTypes
-                bugs={bugs}
-                codeSmells={codeSmells}
-                loading={loading}
-                vulnerabilities={vulnerabilities}
-              />
-            </div>
-          </div>
-
-          {customText && (
-            <div className="about-page-section" dangerouslySetInnerHTML={{ __html: customText }} />
-          )}
-
-          <AboutLanguages />
-
-          <AboutQualityModel />
-
-          <div className="flex-columns">
-            <div className="flex-column flex-column-half about-page-group-boxes">
-              <AboutCleanCode />
-            </div>
-            <div className="flex-column flex-column-half about-page-group-boxes">
-              <AboutLeakPeriod />
-            </div>
-          </div>
-
-          <div className="flex-columns">
-            <div className="flex-column flex-column-half about-page-group-boxes">
-              <AboutQualityGates />
-            </div>
-            <div className="flex-column flex-column-half about-page-group-boxes">
-              <AboutStandards appState={this.props.appState} />
-            </div>
-          </div>
-
-          <AboutScanners />
-        </div>
-      </GlobalContainer>
-    );
+    return (<span></span>)
   }
 }
 
