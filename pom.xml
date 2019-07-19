@@ -748,7 +748,7 @@
         <!-- See SONAR-2512 -->
         <groupId>commons-beanutils</groupId>
         <artifactId>commons-beanutils</artifactId>
-        <version>1.8.3</version>
+        <version>1.9.2</version>
         <exclusions>
           <exclusion>
             <groupId>commons-logging</groupId>
@@ -1362,7 +1362,7 @@
                         </goals>
                       </pluginExecutionFilter>
                       <action>
-                        <ignore />
+                        <ignore/>
                       </action>
                     </pluginExecution>
                     <pluginExecution>
@@ -1375,7 +1375,7 @@
                         </goals>
                       </pluginExecutionFilter>
                       <action>
-                        <ignore />
+                        <ignore/>
                       </action>
                     </pluginExecution>
                     <pluginExecution>
@@ -1389,7 +1389,7 @@
                         </goals>
                       </pluginExecutionFilter>
                       <action>
-                        <ignore />
+                        <ignore/>
                       </action>
                     </pluginExecution>
                     <pluginExecution>
@@ -1402,7 +1402,7 @@
                         </goals>
                       </pluginExecutionFilter>
                       <action>
-                        <ignore />
+                        <ignore/>
                       </action>
                     </pluginExecution>
                   </pluginExecutions>
