@@ -46,10 +46,23 @@ public class CodeScanBranchLoaderDelegate implements BranchLoaderDelegate {
 	}
 
     public void load(final ScannerReport.Metadata metadata) {
+        this.metadataHolder.setBranch(doload(metadata));
+    }
+	private CodeScanBranch doload(final ScannerReport.Metadata metadata ){
+        String targetBranch = StringUtils.trimToNull(metadata.getMergeBranchName());
+
         //get the branch name or default to master
         String branchName = StringUtils.trimToNull( metadata.getBranchName() );
-        if ( branchName == null )
-        	branchName = BranchDto.DEFAULT_MAIN_BRANCH_NAME;
+        if ( branchName == null ){
+            String projectUuid = StringUtils.trimToNull(this.metadataHolder.getProject().getUuid());
+            Optional<BranchDto> branchDto = findBranchByProjectUuid(projectUuid);
+            if (branchDto.isPresent()) {
+                BranchDto dto = branchDto.get();
+                return new CodeScanBranch(dto.getKey(), null, dto.getBranchType(), dto.isMain());
+            } else {
+                throw new IllegalStateException("Could not find main branch");
+            }
+        }
         
         //find an existing target branch
         boolean isMain = false;
@@ -65,17 +78,14 @@ public class CodeScanBranchLoaderDelegate implements BranchLoaderDelegate {
         }
         
         //find the target branch...
-        String targetBranch = StringUtils.trimToNull(metadata.getMergeBranchName());
         String targetBranchUuid = null;
         if ( targetBranch != null ) {
         	targetBranchUuid = this.findTargetBranchUuid(targetBranch);
         }else if ( branchType == BranchType.SHORT ){
         	throw new IllegalArgumentException(String.format("Branch target for '%s' not set, so branch type should be LONG but is '%s'", branchName, branchType));
         }
-        
         //set the output branch...
-        CodeScanBranch branch = new CodeScanBranch(branchName, targetBranchUuid, branchType, isMain);
-        this.metadataHolder.setBranch(branch);
+        return new CodeScanBranch(branchName, targetBranchUuid, branchType, isMain);
     }
     
     private BranchType convertBranchType(final ScannerReport.Metadata.BranchType branchType) {
@@ -109,10 +119,17 @@ public class CodeScanBranchLoaderDelegate implements BranchLoaderDelegate {
         final Project project = this.metadataHolder.getProject();
         return this.findBranchByKey(project.getUuid(), branchName);
     }
-    
+
+
     private Optional<BranchDto> findBranchByKey(final String projectUuid, final String key) {
         try (final DbSession openSession = this.dbClient.openSession(false)){
-        	return this.dbClient.branchDao().selectByBranchKey(openSession, projectUuid, key);
+            return this.dbClient.branchDao().selectByBranchKey(openSession, projectUuid, key);
+        }
+    }
+
+    private Optional<BranchDto> findBranchByProjectUuid(final String projectUuid) {
+        try (final DbSession openSession = this.dbClient.openSession(false)){
+            return this.dbClient.branchDao().selectByUuid(openSession, projectUuid);
         }
     }
 }

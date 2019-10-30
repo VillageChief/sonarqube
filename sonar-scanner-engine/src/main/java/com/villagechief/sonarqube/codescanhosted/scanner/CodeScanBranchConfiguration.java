@@ -33,13 +33,15 @@ public class CodeScanBranchConfiguration implements BranchConfiguration {
 	private final BranchType branchType;
 	private final String branchName;
 	private final String branchTarget;
-	private final String branchBase;
+	private final String targetScmBranch;
+	private final String longLivingSonarReferenceBranch;
 
-	public CodeScanBranchConfiguration(BranchType branchType, String branchName, String branchTarget, String branchBase) {
+	public CodeScanBranchConfiguration(BranchType branchType, String branchName, String branchTarget, String targetScmBranch, String longLivingSonarReferenceBranch) {
 		this.branchType = branchType;
 		this.branchName = branchName;
 		this.branchTarget = branchTarget;
-		this.branchBase = branchBase;
+		this.targetScmBranch = targetScmBranch;
+		this.longLivingSonarReferenceBranch = longLivingSonarReferenceBranch;
 	}
 	
 	@Override
@@ -55,13 +57,13 @@ public class CodeScanBranchConfiguration implements BranchConfiguration {
 	@CheckForNull
 	@Override
 	public String longLivingSonarReferenceBranch() {
-		return branchBase;
+		return longLivingSonarReferenceBranch;
 	}
 
 	@CheckForNull
 	@Override
 	public String targetScmBranch() {
-		return branchTarget;
+		return targetScmBranch;
 	}
 
 	@Override

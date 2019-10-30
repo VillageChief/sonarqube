@@ -51,6 +51,7 @@ public class App {
 	if ( !out.exists() ) {
 		Properties props = new Properties();
 		props.load(App.class.getResourceAsStream("/default.sonar.properties"));
+		props.put("codescan.cluster.enabled", "true");
 		for ( Entry<String, String> e : System.getenv().entrySet() ) {
 			if ( e.getKey().startsWith("prop.") ) {
 				props.put(e.getKey().substring(5), e.getValue());

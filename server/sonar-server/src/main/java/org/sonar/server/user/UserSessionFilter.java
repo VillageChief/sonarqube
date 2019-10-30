@@ -21,6 +21,7 @@ package org.sonar.server.user;
 
 import com.google.common.annotations.VisibleForTesting;
 import java.io.IOException;
+import java.util.Optional;
 import javax.annotation.Nullable;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -67,6 +68,13 @@ public class UserSessionFilter implements Filter {
       defaultOrganizationCache.load();
       try {
         settings.load();
+
+        Optional<String> stsHeader = settings.getRawString("sonar.web.stsHeader");
+        System.out.println(stsHeader);
+        if ( stsHeader.isPresent() ) {
+          response.addHeader("Strict-Transport-Security", stsHeader.get());
+        }
+
         try {
           doFilter(request, response, chain, userSessionInitializer);
         } finally {
