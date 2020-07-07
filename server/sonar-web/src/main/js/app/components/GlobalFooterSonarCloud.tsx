@@ -33,11 +33,11 @@ export default function GlobalFooterSonarCloud({
     <div className="page-footer page-container" id="footer">
       <div>
           © 2017-{getYear(new Date())} <a
-		href="http://www.villagechief.com"
+		href="http://www.codescan.io"
           	rel="noopener noreferrer"
           	target="_blank"
-		title="Village Chief Pty Ltd">
-		VillageChief Pty Ltd</a>
+		title="CodeScan Enterprises LLC">
+		CodeScan Enterprises LLC</a>
 		. All rights reserved.
       </div>
 

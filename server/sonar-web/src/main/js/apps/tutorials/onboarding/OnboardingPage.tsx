@@ -41,7 +41,7 @@ export class OnboardingPage extends React.PureComponent<Props> {
         {openProjectOnboarding => (
           <OnboardingModal
             onClose={this.closeOnboarding}
-            onOpenProjectOnboarding={openProjectOnboarding}
+            onOpenProjectOnboarding={openProjectOnboarding}XXXXv this seems like a loop maybe
           />
         )}
       </OnboardingContext.Consumer>

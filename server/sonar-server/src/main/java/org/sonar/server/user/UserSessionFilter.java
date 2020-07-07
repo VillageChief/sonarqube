@@ -70,7 +70,6 @@ public class UserSessionFilter implements Filter {
         settings.load();
 
         Optional<String> stsHeader = settings.getRawString("sonar.web.stsHeader");
-        System.out.println(stsHeader);
         if ( stsHeader.isPresent() ) {
           response.addHeader("Strict-Transport-Security", stsHeader.get());
         }
