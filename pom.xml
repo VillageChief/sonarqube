@@ -791,7 +791,7 @@
       <dependency>
         <groupId>org.hibernate</groupId>
         <artifactId>hibernate-core</artifactId>
-        <version>3.3.2.GA</version>
+        <version>5.3.18.Final</version>
         <exclusions>
           <exclusion>
             <groupId>javax.transaction</groupId>
@@ -806,7 +806,7 @@
       <dependency>
         <groupId>org.hibernate</groupId>
         <artifactId>hibernate-entitymanager</artifactId>
-        <version>3.4.0.GA</version>
+        <version>5.3.18.Final</version>
         <exclusions>
           <exclusion>
             <groupId>javax.transaction</groupId>
@@ -1362,7 +1362,7 @@
                         </goals>
                       </pluginExecutionFilter>
                       <action>
-                        <ignore />
+                        <ignore/>
                       </action>
                     </pluginExecution>
                     <pluginExecution>
@@ -1375,7 +1375,7 @@
                         </goals>
                       </pluginExecutionFilter>
                       <action>
-                        <ignore />
+                        <ignore/>
                       </action>
                     </pluginExecution>
                     <pluginExecution>
@@ -1389,7 +1389,7 @@
                         </goals>
                       </pluginExecutionFilter>
                       <action>
-                        <ignore />
+                        <ignore/>
                       </action>
                     </pluginExecution>
                     <pluginExecution>
@@ -1402,7 +1402,7 @@
                         </goals>
                       </pluginExecutionFilter>
                       <action>
-                        <ignore />
+                        <ignore/>
                       </action>
                     </pluginExecution>
                   </pluginExecutions>
