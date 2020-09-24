@@ -40,6 +40,7 @@ dependencies {
   scanner project(path: ':sonar-scanner-engine-shaded', configuration: 'shadow')
   web project(':server:sonar-web')
 
+  jdbc_mysql 'mysql:mysql-connector-java'
   jdbc_postgresql 'org.postgresql:postgresql'
 
   testCompile 'junit:junit'
@@ -90,6 +91,9 @@ task zip(type: Zip, dependsOn: [configurations.compile]) {
   into("${archiveDir}/web/") {
     from tasks.getByPath(':server:sonar-web:yarn_run').outputs
     from tasks.getByPath(':server:sonar-vsts:yarn_run').outputs
+  }
+  into("${archiveDir}/lib/jdbc/mysql/") {
+    from configurations.jdbc_mysql
   }
   into("${archiveDir}/lib/jdbc/postgresql/") {
     from configurations.jdbc_postgresql
