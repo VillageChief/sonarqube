@@ -41,6 +41,7 @@ dependencies {
   web project(':server:sonar-web')
 
   jdbc_mysql 'mysql:mysql-connector-java'
+  jdbc_postgresql 'org.postgresql:postgresql'
 
   testCompile 'junit:junit'
   testCompile 'org.assertj:assertj-core'
@@ -93,6 +94,9 @@ task zip(type: Zip, dependsOn: [configurations.compile]) {
   }
   into("${archiveDir}/lib/jdbc/mysql/") {
     from configurations.jdbc_mysql
+  }
+  into("${archiveDir}/lib/jdbc/postgresql/") {
+    from configurations.jdbc_postgresql
   }
 }
 // Create the empty dir required by elasticsearch
