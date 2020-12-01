@@ -75,7 +75,7 @@ export default class EmbedDocsPopup extends React.PureComponent<Props> {
         <li className="divider" />
         <li>
           <a
-            href="https://www.codescan.io/cloud/contact/"
+            href="https://www.codescan.io/contact/"
             rel="noopener noreferrer"
             target="_blank">
             {translate('embed_docs.get_help')}
@@ -92,7 +92,7 @@ export default class EmbedDocsPopup extends React.PureComponent<Props> {
         </li>
         <li>
           {this.renderIconLink(
-            'https://www.codescan.io/blog/',
+            'https://www.codescan.io/resources/blog/',
             'sonarcloud-square-logo.svg',
             translate('embed_docs.blog')
           )}
