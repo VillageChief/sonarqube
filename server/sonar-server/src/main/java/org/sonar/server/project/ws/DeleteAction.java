@@ -22,11 +22,14 @@ package org.sonar.server.project.ws;
 import org.sonar.api.server.ws.Request;
 import org.sonar.api.server.ws.Response;
 import org.sonar.api.server.ws.WebService;
+import org.sonar.api.utils.log.Logger;
+import org.sonar.api.utils.log.Loggers;
 import org.sonar.api.web.UserRole;
 import org.sonar.db.DbClient;
 import org.sonar.db.DbSession;
 import org.sonar.db.component.ComponentDto;
 import org.sonar.db.permission.OrganizationPermission;
+import org.sonar.db.purge.PurgeDao;
 import org.sonar.server.component.ComponentCleanerService;
 import org.sonar.server.component.ComponentFinder;
 import org.sonar.server.project.ProjectLifeCycleListeners;
@@ -40,6 +43,9 @@ import static org.sonarqube.ws.client.project.ProjectsWsParameters.PARAM_PROJECT
 import static org.sonarqube.ws.client.project.ProjectsWsParameters.PARAM_PROJECT_ID;
 
 public class DeleteAction implements ProjectsWsAction {
+
+  private static final Logger LOG = Loggers.get(PurgeDao.class);
+
   private static final String ACTION = "delete";
 
   private final ComponentCleanerService componentCleanerService;
@@ -91,6 +97,10 @@ public class DeleteAction implements ProjectsWsAction {
     try (DbSession dbSession = dbClient.openSession(false)) {
       ComponentDto project = componentFinder.getByUuidOrKey(dbSession, uuid, key, PROJECT_ID_AND_PROJECT);
       checkPermission(project);
+
+      LOG.info("Delete a project with id={}, key={}, uuid={}, organizationUuid={}, userId={}, userLogin={}",
+              project.getId(), project.getKey(), project.uuid(), project.getOrganizationUuid(),
+              userSession.getUserId(), userSession.getLogin());
       componentCleanerService.delete(dbSession, project);
       projectLifeCycleListeners.onProjectsDeleted(singleton(from(project)));
     }
