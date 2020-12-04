@@ -108,7 +108,7 @@ export class OrganizationPage extends React.PureComponent<Props, State> {
         />
         {
           organization.notifications ? organization.notifications.map(notification => (
-                  <Alert variant={notification.type} display="banner">
+                  <Alert variant={notification.type} display="banner" className="top-fixed">
                     <span
                         dangerouslySetInnerHTML={{
                           __html: notification.message
