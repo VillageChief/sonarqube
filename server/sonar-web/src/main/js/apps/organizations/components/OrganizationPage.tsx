@@ -31,6 +31,7 @@ import {
   Store
 } from '../../../store/rootReducer';
 import { fetchOrganization } from '../../../store/rootActions';
+import { Alert } from "../../../components/ui/Alert";
 
 interface OwnProps {
   children?: React.ReactNode;
@@ -105,6 +106,18 @@ export class OrganizationPage extends React.PureComponent<Props, State> {
           organization={organization}
           userOrganizations={this.props.userOrganizations}
         />
+        {
+          organization.notifications ? organization.notifications.map(notification => (
+                  <Alert variant={notification.type} display="banner" className="top-fixed">
+                    <span
+                        dangerouslySetInnerHTML={{
+                          __html: notification.message
+                        }}
+                    />
+                  </Alert>
+              )
+          ) : null
+        }
         {this.props.children}
       </div>
     );
