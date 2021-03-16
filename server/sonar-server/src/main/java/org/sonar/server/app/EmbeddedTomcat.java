@@ -62,7 +62,7 @@ class EmbeddedTomcat {
     try {
       tomcat.start();
       // Set sameSite attribute in default Cookie Processor created during Tomcat context initialization.
-      ((CookieProcessorBase) webappContext.getCookieProcessor()).setSameSiteCookies(SameSiteCookies.STRICT.getValue());
+      ((CookieProcessorBase) webappContext.getCookieProcessor()).setSameSiteCookies(SameSiteCookies.LAX.getValue());
       new TomcatStartupLogs(Loggers.get(getClass())).log(tomcat);
     } catch (LifecycleException e) {
       Loggers.get(EmbeddedTomcat.class).error("Fail to start web server", e);
