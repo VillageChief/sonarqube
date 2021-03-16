@@ -45,15 +45,17 @@ export function Alert(props: AlertProps & React.HTMLAttributes<HTMLElement>) {
       role="alert"
       {...domProps}>
       <div className={classNames('alert-inner', { 'is-banner': display === 'banner' })}>
-        <Tooltip overlay={translate('alert.tooltip', variant)}>
-          <div className={classNames('alert-icon', { 'is-banner': display === 'banner' })}>
-            {variant === 'error' && <AlertErrorIcon fill={theme.alertIconError} />}
-            {variant === 'warning' && <AlertWarnIcon fill={theme.alertIconWarning} />}
-            {variant === 'success' && <AlertSuccessIcon fill={theme.alertIconSuccess} />}
-            {variant === 'info' && <InfoIcon fill={theme.alertIconInfo} />}
-          </div>
-        </Tooltip>
-        <div className="alert-content">{props.children}</div>
+        <div className="alert-inner-content">
+          <Tooltip overlay={translate('alert.tooltip', variant)}>
+            <div className={classNames('alert-icon', { 'is-banner': display === 'banner' })}>
+              {variant === 'error' && <AlertErrorIcon fill={theme.alertIconError} />}
+              {variant === 'warning' && <AlertWarnIcon fill={theme.alertIconWarning} />}
+              {variant === 'success' && <AlertSuccessIcon fill={theme.alertIconSuccess} />}
+              {variant === 'info' && <InfoIcon fill={theme.alertIconInfo} />}
+            </div>
+          </Tooltip>
+          <div className="alert-content">{props.children}</div>
+        </div>
       </div>
     </div>
   );
