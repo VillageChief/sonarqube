@@ -21,7 +21,6 @@
 .ReactModal__Content {
   position: fixed;
   z-index: var(--modalZIndex);
-  top: 0;
   left: 50%;
   margin-left: -270px;
   width: 540px;
@@ -29,6 +28,9 @@
   opacity: 0;
   transition: all 0.2s ease;
   border-radius: 3px;
+  top: 15%;
+  max-height: calc(100vh - 15%);
+  overflow-y: auto;
 }
 
 .modal:focus,
