@@ -135,7 +135,7 @@ export class StartupModal extends React.PureComponent<Props, State> {
     if (
       isSonarCloud() &&
       this.props.currentUser.showOnboardingTutorial &&
-      !['/about', '/documentation', '/onboarding', '/projects/create', '/create-organization'].some(
+      !['/about', '/documentation', '/onboarding', '/projects/create', '/project/extension', '/create-organization', '/organizations/'].some(
         path => this.props.location.pathname.startsWith(path)
       )
     ) {
